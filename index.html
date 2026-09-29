@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Collecte guidée</title>
+<meta name="description" content="Maquette d'un formulaire d'observation guidé : l'observateur répond à des questions simples, le formulaire choisit la bonne façon de saisir.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"></span>
+    <div>
+      <strong>Collecte guidée</strong>
+      <span class="sub">Maquette · exercice fictif</span>
+    </div>
+  </div>
+  <span class="badge">Aucun prix sur le terrain</span>
+</header>
+
+<main class="layout">
+  <aside class="side">
+    <section class="card">
+      <div class="card-head">
+        <h2>Scène observée</h2>
+        <label class="btn ghost small" for="photo">Charger une photo</label>
+        <input id="photo" type="file" accept="image/*" hidden>
+      </div>
+      <div class="photo" id="photoBox">
+        <p>Chargez la photo de la scène pour l'avoir sous les yeux.<br><span class="muted">Elle reste sur votre appareil.</span></p>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Postes</h2>
+        <span class="muted mono" id="progress"></span>
+      </div>
+      <ul class="postes" id="postes"></ul>
+    </section>
+  </aside>
+
+  <section class="stage" aria-live="polite">
+    <div class="card step" id="step"></div>
+  </section>
+
+  <section class="card sheet">
+    <div class="card-head">
+      <h2>Fiche d'observation</h2>
+      <div class="actions">
+        <button class="btn ghost small" id="export" type="button">Exporter (JSON)</button>
+        <button class="btn ghost small" id="reset" type="button">Tout effacer</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Poste</th><th>Résultat</th><th>Provenance</th><th>Confiance</th><th>Suite</th><th>Chemin suivi</th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="note">Le formulaire choisit la façon de saisir (comptage, mesure ou statut) à partir de vos réponses. Vous ne choisissez jamais entre un nombre et une tranche. « Inconnu » n'est jamais enregistré comme zéro.</p>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
