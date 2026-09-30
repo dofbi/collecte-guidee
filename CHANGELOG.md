@@ -1,5 +1,9 @@
 # Journal des versions
 
+## 1.0.2 — 30 septembre 2026
+
+- Le proxy inscrit lui-même le code collecteur validé dans l'observation envoyée à Kobo : plus d'erreur `code_incoherent` quand le téléphone a préparé l'observation avec une ancienne version de l'app ou sans code.
+
 ## 1.0.1 — 30 septembre 2026
 
 - Diagnostic d'envoi : `GET /.netlify/functions/submit` liste les variables manquantes ; `?verifier=1` teste l'accès au serveur Kobo, sans révéler de secret.

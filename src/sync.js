@@ -3,17 +3,9 @@
 // sur l'app et à la demande.
 
 import { observations, reglages } from "./store.js";
+import { avecCode } from "../lib/openrosa.js";
 
 let enCours = false;
-
-// Le code collecteur peut avoir été saisi (ou corrigé) après la fin de l'observation :
-// on inscrit toujours le code actuel dans le XML au moment de l'envoi.
-const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-export function avecCode(xml, code) {
-  const balise = `<code_collecteur>${esc(code)}</code_collecteur>`;
-  if (/<code_collecteur>[\s\S]*?<\/code_collecteur>/.test(xml)) return xml.replace(/<code_collecteur>[\s\S]*?<\/code_collecteur>/, balise);
-  return xml.replace(/(\n\s*)<protocole>/, `$1${balise}$1<protocole>`);
-}
 
 export async function envoyerFile({ url, purge }, notifier = () => {}) {
   if (enCours) return;

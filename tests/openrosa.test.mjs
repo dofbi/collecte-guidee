@@ -56,7 +56,12 @@ test("proxy : code refusé, succès, doublon, erreur Kobo", async () => {
   assert.match(envoye[0].xml, /<aB3cD4 id="aB3cD4">/);
   assert.equal((await (await traiterEnvoi(req({ code: "ABC", instanceID: obs.instanceID, xml }), env, faux(202))).json()).ok, true);
   assert.equal((await traiterEnvoi(req({ code: "ABC", instanceID: obs.instanceID, xml }), env, faux(500))).status, 502);
-  assert.equal((await traiterEnvoi(req({ code: "XYZ", instanceID: obs.instanceID, xml }), env, faux(201))).status, 400, "code différent de celui du XML");
+  // Observation préparée avec un autre code (ou sans code) : le serveur inscrit le code qu'il a validé.
+  assert.equal((await traiterEnvoi(req({ code: "XYZ", instanceID: obs.instanceID, xml }), env, faux(201))).status, 200);
+  assert.match(envoye.at(-1).xml, /<code_collecteur>XYZ<\/code_collecteur>/);
+  const sansCode = versXml(proto, { ...obs, code: "" });
+  assert.equal((await traiterEnvoi(req({ code: "ABC", instanceID: obs.instanceID, xml: sansCode }), env, faux(201))).status, 200);
+  assert.match(envoye.at(-1).xml, /<code_collecteur>ABC<\/code_collecteur>\n\s*<protocole>/);
 });
 
 test("proxy : repli sur identifiant et mot de passe, message de Kobo relayé", async () => {
@@ -84,7 +89,7 @@ test("proxy : diagnostic de configuration sans révéler de secret", async () =>
 });
 
 test("envoi : le code collecteur actuel est inscrit dans le XML", async () => {
-  const { avecCode } = await import("../src/sync.js");
+  const { avecCode } = await import("../lib/openrosa.js");
   const sansCode = versXml(proto, { ...obs, code: "" });
   assert.match(avecCode(sansCode, "ABC"), /<code_collecteur>ABC<\/code_collecteur>\n\s*<protocole>/);
   assert.match(avecCode(versXml(proto, obs), "NEW"), /<code_collecteur>NEW<\/code_collecteur>/);
