@@ -1,0 +1,19 @@
+{
+  "nom": "Collecte guidée",
+  "nom_court": "Collecte",
+  "description": {
+    "fr": "Observer un événement de campagne sans jamais choisir entre un nombre et une tranche : l'app pose les questions, une à la fois.",
+    "en": "Observe a campaign event without ever choosing between a number and a range: the app asks the questions, one at a time."
+  },
+  "couleur": "#0B6E69",
+  "couleur_fond": "#EEF1EC",
+  "langue_defaut": "fr",
+  "protocole": "config/protocole.json",
+  "envoi": "/.netlify/functions/submit",
+  "purge_apres_envoi": true,
+  "analyste": {
+    "fr": "La ligne part dans la file de l'analyste désigné de votre équipe.",
+    "en": "The line goes to your team's designated analyst queue."
+  },
+  "depot": "https://github.com/dofbi/collecte-guidee"
+}

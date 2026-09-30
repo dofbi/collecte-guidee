@@ -1,0 +1,113 @@
+{
+  "$schema": "../schema.json",
+  "id": "porte_a_porte",
+  "version": "0.1.0",
+  "titre": {
+    "fr": "Tournée de porte-à-porte",
+    "en": "Door-to-door canvassing"
+  },
+  "description": {
+    "fr": "Exemple minimal pour montrer qu'un autre protocole tourne sans changer le code : deux postes seulement.",
+    "en": "Minimal example showing another protocol runs without code changes: only two items."
+  },
+  "langues": [
+    "fr",
+    "en"
+  ],
+  "evenement": {
+    "champs": [
+      {
+        "id": "quartier",
+        "type": "texte",
+        "label": {
+          "fr": "Quartier",
+          "en": "Neighbourhood"
+        }
+      }
+    ]
+  },
+  "postes": [
+    {
+      "id": "equipe",
+      "label": {
+        "fr": "Équipe de campagne",
+        "en": "Canvassing team"
+      },
+      "aide": {
+        "fr": "Personnes qui frappent aux portes",
+        "en": "People knocking on doors"
+      },
+      "entree": "effectif",
+      "noeuds": {
+        "effectif": {
+          "type": "compteurs",
+          "question": {
+            "fr": "Combien de personnes dans l'équipe ?",
+            "en": "How many people in the team?"
+          },
+          "champs": [
+            {
+              "id": "militants",
+              "label": {
+                "fr": "Militants",
+                "en": "Activists"
+              }
+            },
+            {
+              "id": "encadrants",
+              "label": {
+                "fr": "Encadrants",
+                "en": "Supervisors"
+              }
+            }
+          ],
+          "valide": "militants + encadrants > 0",
+          "affichage": {
+            "fr": "{militants} militants · {encadrants} encadrants",
+            "en": "{militants} activists · {encadrants} supervisors"
+          },
+          "suite": "confiance"
+        }
+      }
+    },
+    {
+      "id": "cadeaux",
+      "label": {
+        "fr": "Cadeaux remis",
+        "en": "Gifts handed out"
+      },
+      "aide": {
+        "fr": "Sur dix foyers visités",
+        "en": "Out of ten households visited"
+      },
+      "entree": "echantillon",
+      "calculs": {
+        "part_foyers": "foyers * 10"
+      },
+      "noeuds": {
+        "echantillon": {
+          "type": "compteurs",
+          "question": {
+            "fr": "Sur dix foyers visités, combien ont reçu un cadeau ?",
+            "en": "Out of ten households visited, how many received a gift?"
+          },
+          "champs": [
+            {
+              "id": "foyers",
+              "max": 10,
+              "label": {
+                "fr": "Foyers",
+                "en": "Households"
+              }
+            }
+          ],
+          "affichage": {
+            "fr": "{part_foyers} % des foyers",
+            "en": "{part_foyers} % of households"
+          },
+          "suite": "confiance"
+        }
+      }
+    }
+  ]
+}

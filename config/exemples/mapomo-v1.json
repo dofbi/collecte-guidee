@@ -1,0 +1,1358 @@
+{
+  "$schema": "../schema.json",
+  "id": "mapomo_v1",
+  "version": "1.0.0",
+  "titre": {
+    "fr": "Observation d'un événement de campagne",
+    "en": "Campaign event observation"
+  },
+  "description": {
+    "fr": "Protocole issu de la Méthodologie v1 arrêtée le 29 septembre 2026 au Mapomo Innovation Lab (Saly). Règle-mère : comptage exact partout où c'est produisible, estimation structurée ailleurs, intervalle en dernier recours.",
+    "en": "Protocol derived from Methodology v1 adopted on 29 September 2026 at the Mapomo Innovation Lab (Saly). Core rule: exact count wherever it can be produced, structured estimate elsewhere, interval as a last resort."
+  },
+  "langues": [
+    "fr",
+    "en"
+  ],
+  "evenement": {
+    "champs": [
+      {
+        "id": "type",
+        "type": "segment",
+        "label": {
+          "fr": "Type d'événement",
+          "en": "Event type"
+        },
+        "options": [
+          {
+            "v": "defile",
+            "label": {
+              "fr": "Défilé",
+              "en": "Parade"
+            }
+          },
+          {
+            "v": "meeting",
+            "label": {
+              "fr": "Meeting",
+              "en": "Rally"
+            }
+          },
+          {
+            "v": "porte_a_porte",
+            "label": {
+              "fr": "Porte-à-porte",
+              "en": "Door-to-door"
+            }
+          },
+          {
+            "v": "combinaison",
+            "label": {
+              "fr": "Combinaison",
+              "en": "Combination"
+            }
+          }
+        ]
+      },
+      {
+        "id": "echelle",
+        "type": "segment",
+        "label": {
+          "fr": "Échelle du lieu",
+          "en": "Venue scale"
+        },
+        "options": [
+          {
+            "v": "quartier",
+            "label": {
+              "fr": "Quartier",
+              "en": "Neighbourhood"
+            }
+          },
+          {
+            "v": "commune",
+            "label": {
+              "fr": "Commune",
+              "en": "Municipality"
+            }
+          },
+          {
+            "v": "ville",
+            "label": {
+              "fr": "Ville",
+              "en": "City"
+            }
+          },
+          {
+            "v": "region",
+            "label": {
+              "fr": "Région",
+              "en": "Region"
+            }
+          }
+        ]
+      },
+      {
+        "id": "lieu",
+        "type": "texte",
+        "facultatif": true,
+        "label": {
+          "fr": "Lieu (facultatif, sans coordonnées GPS)",
+          "en": "Place (optional, no GPS coordinates)"
+        }
+      }
+    ]
+  },
+  "postes": [
+    {
+      "id": "vehicules",
+      "label": {
+        "fr": "Véhicules",
+        "en": "Vehicles"
+      },
+      "aide": {
+        "fr": "Marqués et non marqués, par type",
+        "en": "Branded and unbranded, by type"
+      },
+      "entree": "marques",
+      "calculs": {
+        "total_marques": "sum(m_grand_bus, m_minibus, m_4x4, m_voiture, m_moto)",
+        "total_non_marques": "sum(u_grand_bus, u_minibus, u_4x4, u_voiture, u_moto)"
+      },
+      "noeuds": {
+        "marques": {
+          "type": "compteurs",
+          "question": {
+            "fr": "Véhicules marqués, par type",
+            "en": "Branded vehicles, by type"
+          },
+          "aide": {
+            "fr": "Affiche, autocollant ou couleurs du candidat. Ils arrivent par deux ou trois : on les compte.",
+            "en": "Poster, sticker or candidate colours. They come in twos or threes: count them."
+          },
+          "champs": [
+            {
+              "id": "m_grand_bus",
+              "label": {
+                "fr": "Grand bus",
+                "en": "Large bus"
+              }
+            },
+            {
+              "id": "m_minibus",
+              "label": {
+                "fr": "Minibus",
+                "en": "Minibus"
+              }
+            },
+            {
+              "id": "m_4x4",
+              "label": {
+                "fr": "4x4",
+                "en": "4x4"
+              }
+            },
+            {
+              "id": "m_voiture",
+              "label": {
+                "fr": "Voiture légère",
+                "en": "Car"
+              }
+            },
+            {
+              "id": "m_moto",
+              "label": {
+                "fr": "Moto",
+                "en": "Motorbike"
+              }
+            }
+          ],
+          "apercu": {
+            "fr": "{total_marques} marqués",
+            "en": "{total_marques} branded"
+          },
+          "suite": "non_marques"
+        },
+        "non_marques": {
+          "type": "compteurs",
+          "question": {
+            "fr": "Véhicules non marqués, par type",
+            "en": "Unbranded vehicles, by type"
+          },
+          "aide": {
+            "fr": "Ceux qui semblent liés à l'événement, sans marquage visible.",
+            "en": "Those that seem linked to the event, with no visible branding."
+          },
+          "champs": [
+            {
+              "id": "u_grand_bus",
+              "label": {
+                "fr": "Grand bus",
+                "en": "Large bus"
+              }
+            },
+            {
+              "id": "u_minibus",
+              "label": {
+                "fr": "Minibus",
+                "en": "Minibus"
+              }
+            },
+            {
+              "id": "u_4x4",
+              "label": {
+                "fr": "4x4",
+                "en": "4x4"
+              }
+            },
+            {
+              "id": "u_voiture",
+              "label": {
+                "fr": "Voiture légère",
+                "en": "Car"
+              }
+            },
+            {
+              "id": "u_moto",
+              "label": {
+                "fr": "Moto",
+                "en": "Motorbike"
+              }
+            }
+          ],
+          "valide": "total_marques + total_non_marques > 0",
+          "apercu": {
+            "fr": "{total_non_marques} non marqués",
+            "en": "{total_non_marques} unbranded"
+          },
+          "suite": "deja_vus"
+        },
+        "deja_vus": {
+          "type": "choix",
+          "question": {
+            "fr": "Avez-vous déjà vu ces véhicules ailleurs aujourd'hui ?",
+            "en": "Have you seen these vehicles elsewhere today?"
+          },
+          "aide": {
+            "fr": "Pour éviter qu'un convoi soit compté sur chaque événement qu'il traverse.",
+            "en": "So that a convoy is not counted at every event it passes through."
+          },
+          "options": [
+            {
+              "v": "oui",
+              "label": {
+                "fr": "Oui, sur un autre événement",
+                "en": "Yes, at another event"
+              },
+              "sous": {
+                "fr": "signalé pour dédoublonnage",
+                "en": "flagged for de-duplication"
+              },
+              "suite": "confiance"
+            },
+            {
+              "v": "non",
+              "label": {
+                "fr": "Non",
+                "en": "No"
+              },
+              "sous": {
+                "fr": "première observation",
+                "en": "first sighting"
+              },
+              "suite": "confiance"
+            },
+            {
+              "v": "nsp",
+              "label": {
+                "fr": "Je ne sais pas",
+                "en": "I don't know"
+              },
+              "sous": {
+                "fr": "l'analyste vérifiera",
+                "en": "the analyst will check"
+              },
+              "suite": "confiance"
+            }
+          ],
+          "affichage": {
+            "fr": "{total_marques} marqués + {total_non_marques} non marqués{?deja_vus=oui: · doublon possible}",
+            "en": "{total_marques} branded + {total_non_marques} unbranded{?deja_vus=oui: · possible duplicate}"
+          }
+        }
+      }
+    },
+    {
+      "id": "chaises",
+      "label": {
+        "fr": "Chaises",
+        "en": "Chairs"
+      },
+      "aide": {
+        "fr": "Rangées × chaises, VIP ou standard",
+        "en": "Rows × chairs, VIP or standard"
+      },
+      "entree": "vue",
+      "calculs": {
+        "total_chaises": "rangees * par_rangee"
+      },
+      "noeuds": {
+        "vue": {
+          "type": "choix",
+          "question": {
+            "fr": "Voyez-vous toutes les rangées ?",
+            "en": "Can you see all the rows?"
+          },
+          "aide": {
+            "fr": "Les chaises ne se comptent pas une par une : on relève la structure.",
+            "en": "Chairs are not counted one by one: record the layout."
+          },
+          "options": [
+            {
+              "v": "toutes",
+              "label": {
+                "fr": "Oui, toutes",
+                "en": "Yes, all of them"
+              },
+              "sous": {
+                "fr": "de la première à la dernière",
+                "en": "from first to last"
+              },
+              "set": {
+                "partiel": "non"
+              },
+              "suite": "structure"
+            },
+            {
+              "v": "partie",
+              "label": {
+                "fr": "En partie",
+                "en": "Only some"
+              },
+              "sous": {
+                "fr": "je ne vois que les premiers rangs",
+                "en": "I only see the front rows"
+              },
+              "set": {
+                "partiel": "oui"
+              },
+              "suite": "structure"
+            }
+          ]
+        },
+        "structure": {
+          "type": "formulaire",
+          "question": {
+            "fr": "Relevez la structure.",
+            "en": "Record the layout."
+          },
+          "aide": {
+            "fr": "Estimation structurée : l'analyste déduit la quantité.",
+            "en": "Structured estimate: the analyst derives the quantity."
+          },
+          "champs": [
+            {
+              "id": "rangees",
+              "type": "compteur",
+              "label": {
+                "fr": "Rangées",
+                "en": "Rows"
+              }
+            },
+            {
+              "id": "par_rangee",
+              "type": "compteur",
+              "label": {
+                "fr": "Chaises par rangée",
+                "en": "Chairs per row"
+              }
+            },
+            {
+              "id": "categorie",
+              "type": "segment",
+              "label": {
+                "fr": "Catégorie",
+                "en": "Category"
+              },
+              "options": [
+                {
+                  "v": "standard",
+                  "label": {
+                    "fr": "Standard",
+                    "en": "Standard"
+                  }
+                },
+                {
+                  "v": "vip",
+                  "label": {
+                    "fr": "VIP",
+                    "en": "VIP"
+                  }
+                },
+                {
+                  "v": "mixte",
+                  "label": {
+                    "fr": "Les deux",
+                    "en": "Both"
+                  }
+                }
+              ]
+            }
+          ],
+          "valide": "rangees > 0 and par_rangee > 0",
+          "apercu": {
+            "fr": "{rangees} × {par_rangee} = {total_chaises} chaises",
+            "en": "{rangees} × {par_rangee} = {total_chaises} chairs"
+          },
+          "affichage": {
+            "fr": "≈ {total_chaises} chaises · {categorie}{?partiel=oui: · minimum visible}",
+            "en": "≈ {total_chaises} chairs · {categorie}{?partiel=oui: · visible minimum}"
+          },
+          "suite": "confiance"
+        }
+      }
+    },
+    {
+      "id": "foule",
+      "label": {
+        "fr": "Foule",
+        "en": "Crowd"
+      },
+      "aide": {
+        "fr": "Lieu, dimensions, part occupée, gêne",
+        "en": "Venue, size, share occupied, crowding"
+      },
+      "entree": "entrer",
+      "calculs": {
+        "surface": "longueur * largeur",
+        "estimation": "longueur * largeur * part / 100 * gene"
+      },
+      "noeuds": {
+        "entrer": {
+          "type": "choix",
+          "question": {
+            "fr": "Pouvez-vous entrer dans la foule ?",
+            "en": "Can you move through the crowd?"
+          },
+          "aide": {
+            "fr": "La chaîne de mesures suppose de pouvoir s'y déplacer sans risque.",
+            "en": "The measurement chain requires moving through it safely."
+          },
+          "options": [
+            {
+              "v": "oui",
+              "label": {
+                "fr": "Oui",
+                "en": "Yes"
+              },
+              "sous": {
+                "fr": "je peux la traverser sans risque",
+                "en": "I can cross it safely"
+              },
+              "suite": "chaine"
+            },
+            {
+              "v": "non",
+              "label": {
+                "fr": "Non",
+                "en": "No"
+              },
+              "sous": {
+                "fr": "trop dense ou pas sûr",
+                "en": "too dense or unsafe"
+              },
+              "suite": "intervalle"
+            }
+          ]
+        },
+        "chaine": {
+          "type": "formulaire",
+          "question": {
+            "fr": "Décrivez le lieu occupé.",
+            "en": "Describe the occupied area."
+          },
+          "aide": {
+            "fr": "Aucun effectif à deviner : il est calculé.",
+            "en": "No headcount to guess: it is calculated."
+          },
+          "champs": [
+            {
+              "id": "type_lieu",
+              "type": "segment",
+              "label": {
+                "fr": "Type de lieu",
+                "en": "Type of venue"
+              },
+              "options": [
+                {
+                  "v": "place",
+                  "label": {
+                    "fr": "Place",
+                    "en": "Square"
+                  }
+                },
+                {
+                  "v": "rue",
+                  "label": {
+                    "fr": "Rue",
+                    "en": "Street"
+                  }
+                },
+                {
+                  "v": "stade",
+                  "label": {
+                    "fr": "Stade",
+                    "en": "Stadium"
+                  }
+                },
+                {
+                  "v": "salle",
+                  "label": {
+                    "fr": "Salle",
+                    "en": "Hall"
+                  }
+                },
+                {
+                  "v": "terrain",
+                  "label": {
+                    "fr": "Terrain",
+                    "en": "Open ground"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "longueur",
+              "type": "segment",
+              "label": {
+                "fr": "Longueur",
+                "en": "Length"
+              },
+              "options": [
+                {
+                  "v": 50,
+                  "label": "50 m"
+                },
+                {
+                  "v": 100,
+                  "label": "100 m"
+                },
+                {
+                  "v": 200,
+                  "label": "200 m"
+                },
+                {
+                  "v": 400,
+                  "label": "400 m"
+                }
+              ]
+            },
+            {
+              "id": "largeur",
+              "type": "segment",
+              "label": {
+                "fr": "Largeur",
+                "en": "Width"
+              },
+              "options": [
+                {
+                  "v": 10,
+                  "label": "10 m"
+                },
+                {
+                  "v": 20,
+                  "label": "20 m"
+                },
+                {
+                  "v": 40,
+                  "label": "40 m"
+                },
+                {
+                  "v": 80,
+                  "label": "80 m"
+                }
+              ]
+            },
+            {
+              "id": "part",
+              "type": "segment",
+              "label": {
+                "fr": "Part réellement occupée",
+                "en": "Share actually occupied"
+              },
+              "options": [
+                {
+                  "v": 25,
+                  "label": "25 %"
+                },
+                {
+                  "v": 50,
+                  "label": "50 %"
+                },
+                {
+                  "v": 75,
+                  "label": "75 %"
+                },
+                {
+                  "v": 100,
+                  "label": "100 %"
+                }
+              ]
+            },
+            {
+              "id": "gene",
+              "type": "segment",
+              "label": {
+                "fr": "Gêne à se déplacer",
+                "en": "Difficulty moving"
+              },
+              "options": [
+                {
+                  "v": 1,
+                  "label": {
+                    "fr": "Aucune (~1 pers./m²)",
+                    "en": "None (~1 pers./m²)"
+                  }
+                },
+                {
+                  "v": 2,
+                  "label": {
+                    "fr": "On se frôle (~2 pers./m²)",
+                    "en": "Brushing past (~2 pers./m²)"
+                  }
+                },
+                {
+                  "v": 4,
+                  "label": {
+                    "fr": "Bloqué (~4 pers./m²)",
+                    "en": "Stuck (~4 pers./m²)"
+                  }
+                }
+              ]
+            }
+          ],
+          "apercu": {
+            "fr": "{surface} m² × {part} × densité ≈ {estimation} personnes",
+            "en": "{surface} m² × {part} × density ≈ {estimation} people"
+          },
+          "affichage": {
+            "fr": "≈ {estimation} personnes ({type_lieu})",
+            "en": "≈ {estimation} people ({type_lieu})"
+          },
+          "suite": "confiance"
+        },
+        "intervalle": {
+          "type": "choix",
+          "dernier_recours": true,
+          "question": {
+            "fr": "Dernier recours : choisissez un intervalle.",
+            "en": "Last resort: pick a range."
+          },
+          "aide": {
+            "fr": "Échelle propre à la foule, à n'utiliser que si la chaîne de mesures est impossible.",
+            "en": "Crowd-specific scale, only when the measurement chain is impossible."
+          },
+          "options": [
+            {
+              "v": "moins_500",
+              "label": {
+                "fr": "Moins de 500",
+                "en": "Under 500"
+              },
+              "suite": "confiance"
+            },
+            {
+              "v": "500_2000",
+              "label": {
+                "fr": "500 à 2 000",
+                "en": "500 to 2,000"
+              },
+              "suite": "confiance"
+            },
+            {
+              "v": "2000_5000",
+              "label": {
+                "fr": "2 000 à 5 000",
+                "en": "2,000 to 5,000"
+              },
+              "suite": "confiance"
+            },
+            {
+              "v": "5000_10000",
+              "label": {
+                "fr": "5 000 à 10 000",
+                "en": "5,000 to 10,000"
+              },
+              "suite": "confiance"
+            },
+            {
+              "v": "plus_10000",
+              "label": {
+                "fr": "Plus de 10 000",
+                "en": "Over 10,000"
+              },
+              "suite": "confiance"
+            }
+          ],
+          "affichage": {
+            "fr": "{intervalle} personnes (intervalle)",
+            "en": "{intervalle} people (range)"
+          }
+        }
+      }
+    },
+    {
+      "id": "objets",
+      "label": {
+        "fr": "Objets distribués",
+        "en": "Distributed items"
+      },
+      "aide": {
+        "fr": "Part de la foule, 5 groupes de 10",
+        "en": "Share of the crowd, 5 groups of 10"
+      },
+      "entree": "objet",
+      "calculs": {
+        "equipes": "sum(g1, g2, g3, g4, g5)",
+        "part_assistance": "sum(g1, g2, g3, g4, g5) * 2"
+      },
+      "noeuds": {
+        "objet": {
+          "type": "choix",
+          "question": {
+            "fr": "Quel objet est distribué ?",
+            "en": "What item is distributed?"
+          },
+          "aide": {
+            "fr": "Un objet par observation. Les tracts se relèvent ici.",
+            "en": "One item per observation. Leaflets go here."
+          },
+          "options": [
+            {
+              "v": "tshirts",
+              "label": {
+                "fr": "T-shirts, casquettes",
+                "en": "T-shirts, caps"
+              },
+              "sous": {
+                "fr": "portés",
+                "en": "worn"
+              },
+              "suite": "dispersion"
+            },
+            {
+              "v": "tracts",
+              "label": {
+                "fr": "Tracts",
+                "en": "Leaflets"
+              },
+              "sous": {
+                "fr": "tenus en main",
+                "en": "held"
+              },
+              "suite": "dispersion"
+            },
+            {
+              "v": "nourriture",
+              "label": {
+                "fr": "Nourriture, boissons",
+                "en": "Food, drinks"
+              },
+              "sous": {
+                "fr": "reçues",
+                "en": "received"
+              },
+              "suite": "dispersion"
+            },
+            {
+              "v": "argent",
+              "label": {
+                "fr": "Argent",
+                "en": "Money"
+              },
+              "sous": {
+                "fr": "reçu",
+                "en": "received"
+              },
+              "suite": "dispersion"
+            },
+            {
+              "v": "pagnes",
+              "label": {
+                "fr": "Pagnes",
+                "en": "Wax fabric"
+              },
+              "sous": {
+                "fr": "portés ou reçus",
+                "en": "worn or received"
+              },
+              "suite": "dispersion"
+            },
+            {
+              "v": "parapluies",
+              "label": {
+                "fr": "Parapluies",
+                "en": "Umbrellas"
+              },
+              "sous": {
+                "fr": "tenus en main",
+                "en": "held"
+              },
+              "suite": "dispersion"
+            }
+          ]
+        },
+        "dispersion": {
+          "type": "choix",
+          "question": {
+            "fr": "La distribution s'est-elle dispersée dans la foule ?",
+            "en": "Has the distribution spread through the crowd?"
+          },
+          "aide": {
+            "fr": "Trop tôt, on mesure la file d'attente et non l'assistance.",
+            "en": "Too early and you measure the queue, not the audience."
+          },
+          "options": [
+            {
+              "v": "oui",
+              "label": {
+                "fr": "Oui",
+                "en": "Yes"
+              },
+              "sous": {
+                "fr": "la distribution est terminée ou avancée",
+                "en": "distribution is over or well advanced"
+              },
+              "suite": "groupes"
+            },
+            {
+              "v": "pas_encore",
+              "label": {
+                "fr": "Pas encore",
+                "en": "Not yet"
+              },
+              "sous": {
+                "fr": "revenir plus tard",
+                "en": "come back later"
+              },
+              "set": {
+                "prov": "N"
+              },
+              "fin": {
+                "affichage": {
+                  "fr": "À reprendre après dispersion",
+                  "en": "Redo after dispersal"
+                },
+                "note": {
+                  "fr": "Refaites l'échantillon quand la distribution s'est répandue.",
+                  "en": "Redo the sample once the distribution has spread."
+                }
+              }
+            }
+          ]
+        },
+        "groupes": {
+          "type": "compteurs",
+          "question": {
+            "fr": "Cinq groupes de dix personnes",
+            "en": "Five groups of ten people"
+          },
+          "aide": {
+            "fr": "Répartis à l'avant, au milieu et à l'arrière. Combien portent, tiennent ou ont reçu l'objet ?",
+            "en": "Spread across front, middle and back. How many wear, hold or received the item?"
+          },
+          "champs": [
+            {
+              "id": "g1",
+              "max": 10,
+              "label": {
+                "fr": "Groupe 1 · avant",
+                "en": "Group 1 · front"
+              }
+            },
+            {
+              "id": "g2",
+              "max": 10,
+              "label": {
+                "fr": "Groupe 2 · avant",
+                "en": "Group 2 · front"
+              }
+            },
+            {
+              "id": "g3",
+              "max": 10,
+              "label": {
+                "fr": "Groupe 3 · milieu",
+                "en": "Group 3 · middle"
+              }
+            },
+            {
+              "id": "g4",
+              "max": 10,
+              "label": {
+                "fr": "Groupe 4 · milieu",
+                "en": "Group 4 · middle"
+              }
+            },
+            {
+              "id": "g5",
+              "max": 10,
+              "label": {
+                "fr": "Groupe 5 · arrière",
+                "en": "Group 5 · back"
+              }
+            }
+          ],
+          "apercu": {
+            "fr": "{equipes} sur 50 · {part_assistance} % de l'assistance",
+            "en": "{equipes} out of 50 · {part_assistance} % of the audience"
+          },
+          "affichage": {
+            "fr": "{objet} : {part_assistance} % de l'assistance",
+            "en": "{objet}: {part_assistance} % of the audience"
+          },
+          "suite": "confiance"
+        }
+      }
+    },
+    {
+      "id": "sono",
+      "label": {
+        "fr": "Estrade et sonorisation",
+        "en": "Stage and sound"
+      },
+      "aide": {
+        "fr": "Dimensions, classe, opérateur",
+        "en": "Size, class, operator"
+      },
+      "entree": "estrade",
+      "calculs": {
+        "surface_estrade": "largeur_estrade * profondeur"
+      },
+      "noeuds": {
+        "estrade": {
+          "type": "formulaire",
+          "question": {
+            "fr": "Estrade et sonorisation",
+            "en": "Stage and sound system"
+          },
+          "aide": {
+            "fr": "Dimensions de l'estrade. Classe de sonorisation telle qu'enseignée en formation.",
+            "en": "Stage size. Sound class as taught in training."
+          },
+          "champs": [
+            {
+              "id": "largeur_estrade",
+              "type": "segment",
+              "label": {
+                "fr": "Largeur de l'estrade",
+                "en": "Stage width"
+              },
+              "options": [
+                {
+                  "v": 4,
+                  "label": "4 m"
+                },
+                {
+                  "v": 8,
+                  "label": "8 m"
+                },
+                {
+                  "v": 12,
+                  "label": "12 m"
+                },
+                {
+                  "v": 16,
+                  "label": "16 m"
+                }
+              ]
+            },
+            {
+              "id": "profondeur",
+              "type": "segment",
+              "label": {
+                "fr": "Profondeur",
+                "en": "Depth"
+              },
+              "options": [
+                {
+                  "v": 3,
+                  "label": "3 m"
+                },
+                {
+                  "v": 6,
+                  "label": "6 m"
+                },
+                {
+                  "v": 9,
+                  "label": "9 m"
+                }
+              ]
+            },
+            {
+              "id": "classe_sono",
+              "type": "segment",
+              "label": {
+                "fr": "Classe de sonorisation",
+                "en": "Sound class"
+              },
+              "options": [
+                {
+                  "v": "a",
+                  "label": {
+                    "fr": "A · petite",
+                    "en": "A · small"
+                  }
+                },
+                {
+                  "v": "b",
+                  "label": {
+                    "fr": "B · moyenne",
+                    "en": "B · medium"
+                  }
+                },
+                {
+                  "v": "c",
+                  "label": {
+                    "fr": "C · grande",
+                    "en": "C · large"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "operateur",
+              "type": "segment",
+              "label": {
+                "fr": "Opérateur présent ?",
+                "en": "Operator present?"
+              },
+              "options": [
+                {
+                  "v": "oui",
+                  "label": {
+                    "fr": "Oui",
+                    "en": "Yes"
+                  }
+                },
+                {
+                  "v": "non",
+                  "label": {
+                    "fr": "Non",
+                    "en": "No"
+                  }
+                }
+              ]
+            }
+          ],
+          "apercu": {
+            "fr": "Estrade {surface_estrade} m²",
+            "en": "Stage {surface_estrade} m²"
+          },
+          "affichage": {
+            "fr": "Estrade {surface_estrade} m² · sono {classe_sono} · opérateur : {operateur}",
+            "en": "Stage {surface_estrade} m² · sound {classe_sono} · operator: {operateur}"
+          },
+          "suite": "confiance"
+        }
+      }
+    },
+    {
+      "id": "services",
+      "label": {
+        "fr": "Services",
+        "en": "Services"
+      },
+      "aide": {
+        "fr": "Sécurité, hôtesses, photographes",
+        "en": "Security, hosts, photographers"
+      },
+      "entree": "comptable",
+      "calculs": {
+        "total_services": "sum(securite, hotesses, photographes)",
+        "agents_estimes": "longueur_cordon / espacement"
+      },
+      "noeuds": {
+        "comptable": {
+          "type": "choix",
+          "question": {
+            "fr": "Pouvez-vous compter les agents ?",
+            "en": "Can you count the staff?"
+          },
+          "aide": {
+            "fr": "Sécurité, hôtesses, photographes.",
+            "en": "Security, hosts, photographers."
+          },
+          "options": [
+            {
+              "v": "oui",
+              "label": {
+                "fr": "Oui",
+                "en": "Yes"
+              },
+              "sous": {
+                "fr": "ils sont peu nombreux ou regroupés",
+                "en": "few or grouped"
+              },
+              "suite": "par_metier"
+            },
+            {
+              "v": "non",
+              "label": {
+                "fr": "Non",
+                "en": "No"
+              },
+              "sous": {
+                "fr": "un cordon trop long pour compter",
+                "en": "a cordon too long to count"
+              },
+              "suite": "cordon"
+            }
+          ]
+        },
+        "par_metier": {
+          "type": "compteurs",
+          "question": {
+            "fr": "Un nombre par métier.",
+            "en": "One number per role."
+          },
+          "aide": {
+            "fr": "Comptage exact : c'est produisible.",
+            "en": "Exact count: it can be produced."
+          },
+          "champs": [
+            {
+              "id": "securite",
+              "label": {
+                "fr": "Sécurité",
+                "en": "Security"
+              }
+            },
+            {
+              "id": "hotesses",
+              "label": {
+                "fr": "Hôtesses",
+                "en": "Hosts"
+              }
+            },
+            {
+              "id": "photographes",
+              "label": {
+                "fr": "Photographes",
+                "en": "Photographers"
+              }
+            }
+          ],
+          "valide": "total_services > 0",
+          "apercu": {
+            "fr": "{total_services} personnes",
+            "en": "{total_services} people"
+          },
+          "affichage": {
+            "fr": "{securite} sécurité · {hotesses} hôtesses · {photographes} photographes",
+            "en": "{securite} security · {hotesses} hosts · {photographes} photographers"
+          },
+          "suite": "confiance"
+        },
+        "cordon": {
+          "type": "formulaire",
+          "question": {
+            "fr": "Distance entre agents et longueur couverte.",
+            "en": "Spacing between agents and length covered."
+          },
+          "aide": {
+            "fr": "Estimation structurée pour les cordons de sécurité.",
+            "en": "Structured estimate for security cordons."
+          },
+          "champs": [
+            {
+              "id": "espacement",
+              "type": "segment",
+              "label": {
+                "fr": "Un agent tous les",
+                "en": "One agent every"
+              },
+              "options": [
+                {
+                  "v": 2,
+                  "label": "2 m"
+                },
+                {
+                  "v": 5,
+                  "label": "5 m"
+                },
+                {
+                  "v": 10,
+                  "label": "10 m"
+                }
+              ]
+            },
+            {
+              "id": "longueur_cordon",
+              "type": "segment",
+              "label": {
+                "fr": "Sur une longueur de",
+                "en": "Over a length of"
+              },
+              "options": [
+                {
+                  "v": 20,
+                  "label": "20 m"
+                },
+                {
+                  "v": 50,
+                  "label": "50 m"
+                },
+                {
+                  "v": 100,
+                  "label": "100 m"
+                },
+                {
+                  "v": 200,
+                  "label": "200 m"
+                }
+              ]
+            }
+          ],
+          "apercu": {
+            "fr": "≈ {agents_estimes} agents de sécurité",
+            "en": "≈ {agents_estimes} security agents"
+          },
+          "affichage": {
+            "fr": "≈ {agents_estimes} agents de sécurité (cordon)",
+            "en": "≈ {agents_estimes} security agents (cordon)"
+          },
+          "suite": "confiance"
+        }
+      }
+    },
+    {
+      "id": "artistes",
+      "label": {
+        "fr": "Artistes",
+        "en": "Performers"
+      },
+      "aide": {
+        "fr": "Nombre, notoriété",
+        "en": "Number, fame"
+      },
+      "entree": "presence",
+      "noeuds": {
+        "presence": {
+          "type": "formulaire",
+          "question": {
+            "fr": "Artistes présents",
+            "en": "Performers present"
+          },
+          "aide": {
+            "fr": "C'est la notoriété qui fait le cachet.",
+            "en": "Fame drives the fee."
+          },
+          "champs": [
+            {
+              "id": "nombre_artistes",
+              "type": "compteur",
+              "label": {
+                "fr": "Nombre d'artistes",
+                "en": "Number of performers"
+              }
+            },
+            {
+              "id": "notoriete",
+              "type": "segment",
+              "label": {
+                "fr": "Niveau de notoriété",
+                "en": "Level of fame"
+              },
+              "options": [
+                {
+                  "v": "locale",
+                  "label": {
+                    "fr": "Locale",
+                    "en": "Local"
+                  }
+                },
+                {
+                  "v": "nationale",
+                  "label": {
+                    "fr": "Nationale",
+                    "en": "National"
+                  }
+                },
+                {
+                  "v": "internationale",
+                  "label": {
+                    "fr": "Internationale",
+                    "en": "International"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "noms",
+              "type": "texte",
+              "facultatif": true,
+              "label": {
+                "fr": "Noms (facultatif)",
+                "en": "Names (optional)"
+              }
+            }
+          ],
+          "valide": "nombre_artistes > 0",
+          "affichage": {
+            "fr": "{nombre_artistes} artiste(s) · notoriété {notoriete}",
+            "en": "{nombre_artistes} performer(s) · {notoriete} fame"
+          },
+          "suite": "confiance"
+        }
+      }
+    },
+    {
+      "id": "imprimes",
+      "label": {
+        "fr": "Supports imprimés",
+        "en": "Printed material"
+      },
+      "aide": {
+        "fr": "Affiches et banderoles",
+        "en": "Posters and banners"
+      },
+      "entree": "supports",
+      "noeuds": {
+        "supports": {
+          "type": "compteurs",
+          "question": {
+            "fr": "Affiches et banderoles",
+            "en": "Posters and banners"
+          },
+          "aide": {
+            "fr": "Les tracts se relèvent dans « Objets distribués ».",
+            "en": "Leaflets are recorded under “Distributed items”."
+          },
+          "champs": [
+            {
+              "id": "affiches",
+              "label": {
+                "fr": "Affiches",
+                "en": "Posters"
+              }
+            },
+            {
+              "id": "banderoles",
+              "label": {
+                "fr": "Banderoles",
+                "en": "Banners"
+              }
+            }
+          ],
+          "valide": "affiches + banderoles > 0",
+          "affichage": {
+            "fr": "{affiches} affiches · {banderoles} banderoles",
+            "en": "{affiches} posters · {banderoles} banners"
+          },
+          "suite": "confiance"
+        }
+      }
+    }
+  ]
+}

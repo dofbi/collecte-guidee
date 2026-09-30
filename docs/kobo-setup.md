@@ -1,0 +1,46 @@
+# Préparer KoboToolbox
+
+## 1. Générer le formulaire
+
+```sh
+npm run generer
+```
+
+Produit `kobo/<id-du-protocole>.xlsx` (nécessite Python 3 et `openpyxl`) et les CSV lisibles de `kobo/xlsform/`. Si Python manque, ouvrez les trois CSV dans un tableur et enregistrez-les comme feuilles `survey`, `choices` et `settings` d'un même classeur `.xlsx`.
+
+## 2. Créer le projet
+
+1. Connectez-vous à votre serveur Kobo : global (`kf.kobotoolbox.org`), européen (`eu.kobotoolbox.org`) ou auto-hébergé.
+2. **New → Upload an XLSForm**, choisissez le fichier `.xlsx`.
+3. **Deploy**.
+4. Notez l'**uid** du projet : c'est la partie de l'adresse après `/forms/` (ex. `aB3cD4eF5gH6`). C'est `KOBO_FORM_ID`.
+
+## 3. Choisir l'authentification
+
+- **Jeton d'API (recommandé)** : *Account settings → Security → API key*. C'est `KOBO_TOKEN`. Utilisez de préférence un **compte dédié** à la collecte, avec les seuls droits d'ajout de données sur ce projet.
+- **Ou identifiant et mot de passe** de ce compte dédié : `KOBO_USERNAME` et `KOBO_PASSWORD` (authentification Basic).
+
+Laissez l'option « submissions without username and password » **désactivée** : c'est le proxy qui s'authentifie.
+
+## 4. L'adresse de soumission
+
+C'est le point OpenRosa utilisé par KoboCollect :
+
+| Serveur | `KOBO_SUBMISSION_URL` |
+|---|---|
+| Global | `https://kc.kobotoolbox.org/submission` |
+| Europe | `https://kc-eu.kobotoolbox.org/submission` |
+| Auto-hébergé | `https://kc.<votre-domaine>/submission` |
+
+## 5. Vérifier avant la collecte
+
+1. Déployez l'app avec un code collecteur de test.
+2. Remplissez une observation, envoyez-la.
+3. Vérifiez qu'elle apparaît dans **Data** du projet Kobo, avec les bons champs.
+4. Renvoyez-la (réglage « purge » désactivé) : Kobo doit la reconnaître comme doublon (même `instanceID`).
+
+Si l'envoi échoue avec `kobo_authentification`, vérifiez le jeton ou passez en `KOBO_USERNAME` / `KOBO_PASSWORD`. Si Kobo répond que le formulaire est introuvable, vérifiez `KOBO_FORM_ID` et, si besoin, `KOBO_ROOT_TAG` (nom de l'élément racine du formulaire déployé, visible dans l'XForm téléchargé depuis Kobo).
+
+## Modifier le protocole après déploiement
+
+Régénérez le `.xlsx`, remplacez le formulaire dans Kobo (**Replace form**), redéployez, puis publiez l'app (pensez à incrémenter `VERSION` dans `sw.js`). Les noms de champs restent stables tant que les identifiants du protocole ne changent pas.

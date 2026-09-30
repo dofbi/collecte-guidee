@@ -1,0 +1,16 @@
+# Journal des versions
+
+## 1.0.0 — 30 septembre 2026
+
+- Application web progressive (PWA) installable, utilisable hors ligne.
+- Moteur générique : le protocole de collecte est décrit en JSON (`config/protocole.json`) ; aucun poste n'est codé en dur.
+- Protocole de référence `mapomo_v1` conforme à la Méthodologie v1 du Mapomo Innovation Lab (8 postes, en-tête d'événement type × échelle).
+- Exemple minimal `porte_a_porte` pour montrer la réutilisation sans code.
+- Génération du formulaire KoboToolbox (XLSForm) à partir du même protocole, utilisable aussi dans KoboCollect et Enketo.
+- Envoi vers KoboToolbox (OpenRosa) via un proxy qui garde le jeton côté serveur ; file d'envoi et reprise automatique.
+- Code collecteur pseudonyme, purge après envoi, pas de GPS, interface FR / EN.
+- Licence AGPL-3.0.
+
+## 0.1.0 — 29 septembre 2026
+
+- Maquette cliquable de la collecte guidée (5 postes, stockage local).

@@ -1,0 +1,172 @@
+list_name,name,label::Français (fr),label::English (en)
+l__evt__type,defile,Défilé,Parade
+l__evt__type,meeting,Meeting,Rally
+l__evt__type,porte_a_porte,Porte-à-porte,Door-to-door
+l__evt__type,combinaison,Combinaison,Combination
+l__evt__echelle,quartier,Quartier,Neighbourhood
+l__evt__echelle,commune,Commune,Municipality
+l__evt__echelle,ville,Ville,City
+l__evt__echelle,region,Région,Region
+l__vehicules__source,vu,Je le vois,I can see it
+l__vehicules__source,dit,On me l'a dit,Someone told me
+l__vehicules__source,pas_vu,Je ne le vois pas,I cannot see it
+l__vehicules__rapporte,participant,Un participant,A participant
+l__vehicules__rapporte,organisateur,Un organisateur,An organiser
+l__vehicules__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
+l__vehicules__rapporte,autre,Autre source,Other source
+l__vehicules__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
+l__vehicules__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__vehicules__deja_vus,oui,"Oui, sur un autre événement","Yes, at another event"
+l__vehicules__deja_vus,non,Non,No
+l__vehicules__deja_vus,nsp,Je ne sais pas,I don't know
+l__vehicules__confiance,sur,Sûr,Sure
+l__vehicules__confiance,assez,Assez sûr,Fairly sure
+l__vehicules__confiance,peu,Peu sûr,Not sure
+l__chaises__source,vu,Je le vois,I can see it
+l__chaises__source,dit,On me l'a dit,Someone told me
+l__chaises__source,pas_vu,Je ne le vois pas,I cannot see it
+l__chaises__vue,toutes,"Oui, toutes","Yes, all of them"
+l__chaises__vue,partie,En partie,Only some
+l__chaises__rapporte,participant,Un participant,A participant
+l__chaises__rapporte,organisateur,Un organisateur,An organiser
+l__chaises__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
+l__chaises__rapporte,autre,Autre source,Other source
+l__chaises__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
+l__chaises__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__chaises__categorie,standard,Standard,Standard
+l__chaises__categorie,vip,VIP,VIP
+l__chaises__categorie,mixte,Les deux,Both
+l__chaises__confiance,sur,Sûr,Sure
+l__chaises__confiance,assez,Assez sûr,Fairly sure
+l__chaises__confiance,peu,Peu sûr,Not sure
+l__foule__source,vu,Je le vois,I can see it
+l__foule__source,dit,On me l'a dit,Someone told me
+l__foule__source,pas_vu,Je ne le vois pas,I cannot see it
+l__foule__entrer,oui,Oui,Yes
+l__foule__entrer,non,Non,No
+l__foule__rapporte,participant,Un participant,A participant
+l__foule__rapporte,organisateur,Un organisateur,An organiser
+l__foule__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
+l__foule__rapporte,autre,Autre source,Other source
+l__foule__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
+l__foule__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__foule__type_lieu,place,Place,Square
+l__foule__type_lieu,rue,Rue,Street
+l__foule__type_lieu,stade,Stade,Stadium
+l__foule__type_lieu,salle,Salle,Hall
+l__foule__type_lieu,terrain,Terrain,Open ground
+l__foule__longueur,50,50 m,50 m
+l__foule__longueur,100,100 m,100 m
+l__foule__longueur,200,200 m,200 m
+l__foule__longueur,400,400 m,400 m
+l__foule__largeur,10,10 m,10 m
+l__foule__largeur,20,20 m,20 m
+l__foule__largeur,40,40 m,40 m
+l__foule__largeur,80,80 m,80 m
+l__foule__part,25,25 %,25 %
+l__foule__part,50,50 %,50 %
+l__foule__part,75,75 %,75 %
+l__foule__part,100,100 %,100 %
+l__foule__gene,1,Aucune (~1 pers./m²),None (~1 pers./m²)
+l__foule__gene,2,On se frôle (~2 pers./m²),Brushing past (~2 pers./m²)
+l__foule__gene,4,Bloqué (~4 pers./m²),Stuck (~4 pers./m²)
+l__foule__intervalle,moins_500,Moins de 500,Under 500
+l__foule__intervalle,500_2000,500 à 2 000,"500 to 2,000"
+l__foule__intervalle,2000_5000,2 000 à 5 000,"2,000 to 5,000"
+l__foule__intervalle,5000_10000,5 000 à 10 000,"5,000 to 10,000"
+l__foule__intervalle,plus_10000,Plus de 10 000,"Over 10,000"
+l__foule__confiance,sur,Sûr,Sure
+l__foule__confiance,assez,Assez sûr,Fairly sure
+l__foule__confiance,peu,Peu sûr,Not sure
+l__objets__source,vu,Je le vois,I can see it
+l__objets__source,dit,On me l'a dit,Someone told me
+l__objets__source,pas_vu,Je ne le vois pas,I cannot see it
+l__objets__objet,tshirts,"T-shirts, casquettes","T-shirts, caps"
+l__objets__objet,tracts,Tracts,Leaflets
+l__objets__objet,nourriture,"Nourriture, boissons","Food, drinks"
+l__objets__objet,argent,Argent,Money
+l__objets__objet,pagnes,Pagnes,Wax fabric
+l__objets__objet,parapluies,Parapluies,Umbrellas
+l__objets__rapporte,participant,Un participant,A participant
+l__objets__rapporte,organisateur,Un organisateur,An organiser
+l__objets__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
+l__objets__rapporte,autre,Autre source,Other source
+l__objets__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
+l__objets__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__objets__dispersion,oui,Oui,Yes
+l__objets__dispersion,pas_encore,Pas encore,Not yet
+l__objets__confiance,sur,Sûr,Sure
+l__objets__confiance,assez,Assez sûr,Fairly sure
+l__objets__confiance,peu,Peu sûr,Not sure
+l__sono__source,vu,Je le vois,I can see it
+l__sono__source,dit,On me l'a dit,Someone told me
+l__sono__source,pas_vu,Je ne le vois pas,I cannot see it
+l__sono__largeur_estrade,4,4 m,4 m
+l__sono__largeur_estrade,8,8 m,8 m
+l__sono__largeur_estrade,12,12 m,12 m
+l__sono__largeur_estrade,16,16 m,16 m
+l__sono__profondeur,3,3 m,3 m
+l__sono__profondeur,6,6 m,6 m
+l__sono__profondeur,9,9 m,9 m
+l__sono__classe_sono,a,A · petite,A · small
+l__sono__classe_sono,b,B · moyenne,B · medium
+l__sono__classe_sono,c,C · grande,C · large
+l__sono__operateur,oui,Oui,Yes
+l__sono__operateur,non,Non,No
+l__sono__rapporte,participant,Un participant,A participant
+l__sono__rapporte,organisateur,Un organisateur,An organiser
+l__sono__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
+l__sono__rapporte,autre,Autre source,Other source
+l__sono__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
+l__sono__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__sono__confiance,sur,Sûr,Sure
+l__sono__confiance,assez,Assez sûr,Fairly sure
+l__sono__confiance,peu,Peu sûr,Not sure
+l__services__source,vu,Je le vois,I can see it
+l__services__source,dit,On me l'a dit,Someone told me
+l__services__source,pas_vu,Je ne le vois pas,I cannot see it
+l__services__comptable,oui,Oui,Yes
+l__services__comptable,non,Non,No
+l__services__rapporte,participant,Un participant,A participant
+l__services__rapporte,organisateur,Un organisateur,An organiser
+l__services__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
+l__services__rapporte,autre,Autre source,Other source
+l__services__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
+l__services__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__services__espacement,2,2 m,2 m
+l__services__espacement,5,5 m,5 m
+l__services__espacement,10,10 m,10 m
+l__services__longueur_cordon,20,20 m,20 m
+l__services__longueur_cordon,50,50 m,50 m
+l__services__longueur_cordon,100,100 m,100 m
+l__services__longueur_cordon,200,200 m,200 m
+l__services__confiance,sur,Sûr,Sure
+l__services__confiance,assez,Assez sûr,Fairly sure
+l__services__confiance,peu,Peu sûr,Not sure
+l__artistes__source,vu,Je le vois,I can see it
+l__artistes__source,dit,On me l'a dit,Someone told me
+l__artistes__source,pas_vu,Je ne le vois pas,I cannot see it
+l__artistes__notoriete,locale,Locale,Local
+l__artistes__notoriete,nationale,Nationale,National
+l__artistes__notoriete,internationale,Internationale,International
+l__artistes__rapporte,participant,Un participant,A participant
+l__artistes__rapporte,organisateur,Un organisateur,An organiser
+l__artistes__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
+l__artistes__rapporte,autre,Autre source,Other source
+l__artistes__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
+l__artistes__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__artistes__confiance,sur,Sûr,Sure
+l__artistes__confiance,assez,Assez sûr,Fairly sure
+l__artistes__confiance,peu,Peu sûr,Not sure
+l__imprimes__source,vu,Je le vois,I can see it
+l__imprimes__source,dit,On me l'a dit,Someone told me
+l__imprimes__source,pas_vu,Je ne le vois pas,I cannot see it
+l__imprimes__rapporte,participant,Un participant,A participant
+l__imprimes__rapporte,organisateur,Un organisateur,An organiser
+l__imprimes__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
+l__imprimes__rapporte,autre,Autre source,Other source
+l__imprimes__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
+l__imprimes__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__imprimes__confiance,sur,Sûr,Sure
+l__imprimes__confiance,assez,Assez sûr,Fairly sure
+l__imprimes__confiance,peu,Peu sûr,Not sure
