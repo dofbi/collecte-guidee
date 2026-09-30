@@ -74,7 +74,7 @@ Aucune dépendance, aucune étape de build : des modules JavaScript natifs.
 
 ```sh
 npm run dev          # sert l'app sur http://localhost:8000 (l'envoi nécessite la fonction Netlify)
-npm test             # 16 tests : moteur, protocole, XLSForm, XML, proxy
+npm test             # 19 tests : moteur, protocole, XLSForm, XML, proxy
 npm run generer      # régénère kobo/ et manifest.webmanifest après une modification de config/
 ```
 
@@ -96,7 +96,10 @@ Guide complet : [docs/deployer.md](docs/deployer.md). En bref :
 | `COLLECT_CODES` | `EQ01,EQ02,EQ03` |
 | `KOBO_FORM_VERSION`, `KOBO_ROOT_TAG` | facultatifs |
 
-4. Distribuer l'adresse et les codes collecteurs. Sur le téléphone : « Ajouter à l'écran d'accueil ».
+4. **Redéployer** le site pour que les variables soient prises en compte, puis vérifier `https://<votre-site>/.netlify/functions/submit?verifier=1` (aucun secret n'y apparaît).
+5. Distribuer l'adresse et les codes collecteurs. Sur le téléphone : « Ajouter à l'écran d'accueil ».
+
+Un envoi qui échoue ? Voir [docs/depannage.md](docs/depannage.md).
 
 Le proxy ([`lib/proxy.js`](lib/proxy.js)) ne dépend pas de Netlify : il prend une `Request` et rend une `Response`, et peut tourner dans un Cloudflare Worker ou un serveur Node.
 
@@ -106,7 +109,7 @@ Observer les dépenses d'un parti expose. Choix par défaut : pas de GPS, pas de
 
 ## Limites connues
 
-- L'envoi utilise le point de soumission OpenRosa de KoboToolbox, celui de KoboCollect et Enketo. **Il doit être vérifié sur votre serveur Kobo** avec un projet de test avant une collecte réelle.
+- L'envoi utilise le point de soumission OpenRosa de KoboToolbox, celui de KoboCollect et Enketo. Il a été **validé de bout en bout avec un projet KoboToolbox réel** le 30 septembre 2026 ; faites tout de même un envoi de test sur votre propre serveur avant une collecte réelle ([docs/depannage.md](docs/depannage.md)).
 - Un seul objet distribué par observation (les groupes répétés viendront plus tard).
 - Pas de synchronisation en arrière-plan quand l'app est fermée : l'envoi se fait à l'ouverture, au retour du réseau ou à la demande.
 - Deux points de méthode restent ouverts au Lab : P9 (une ou deux colonnes pour provenance et confiance ; l'app en garde deux) et P12 (observateurs en désaccord). Le dédoublonnage des convois n'est qu'un signal pour l'analyste.

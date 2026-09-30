@@ -39,7 +39,7 @@ C'est le point OpenRosa utilisé par KoboCollect :
 3. Vérifiez qu'elle apparaît dans **Data** du projet Kobo, avec les bons champs.
 4. Renvoyez-la (réglage « purge » désactivé) : Kobo doit la reconnaître comme doublon (même `instanceID`).
 
-Si l'envoi échoue avec `kobo_authentification`, vérifiez le jeton ou passez en `KOBO_USERNAME` / `KOBO_PASSWORD`. Si Kobo répond que le formulaire est introuvable, vérifiez `KOBO_FORM_ID` et, si besoin, `KOBO_ROOT_TAG` (nom de l'élément racine du formulaire déployé, visible dans l'XForm téléchargé depuis Kobo).
+Avant ce test, `https://<votre-site>/.netlify/functions/submit?verifier=1` doit indiquer `"accepte": true`. En cas d'échec, chaque message est expliqué dans [depannage.md](depannage.md).
 
 ## Modifier le protocole après déploiement
 

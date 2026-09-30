@@ -18,9 +18,13 @@
    - `KOBO_FORM_ID`
    - `KOBO_TOKEN` (ou `KOBO_USERNAME` et `KOBO_PASSWORD`)
    - `COLLECT_CODES`, séparés par des virgules
-7. **Redéployez**, puis ouvrez `https://<votre-site>/.netlify/functions/submit` : la réponse doit contenir `"configure": true`.
+7. **Redéployez** (les variables ne s'appliquent qu'au déploiement suivant), puis ouvrez `https://<votre-site>/.netlify/functions/submit?verifier=1` : la réponse doit contenir `"configure": true`, un `nombre_codes_collecteurs` supérieur à 0 et `"accepte": true` pour Kobo. Vérifiez aussi que les variables sont disponibles pour les *Functions* dans Netlify.
 8. **Testez** une observation de bout en bout (étape 5 de [kobo-setup.md](kobo-setup.md)).
 9. **Formez les observateurs** : installer l'app (« Ajouter à l'écran d'accueil »), saisir le code collecteur dans Réglages, faire une observation d'essai.
+
+## En cas de problème
+
+Voir [depannage.md](depannage.md) : chaque message d'erreur de l'app y est expliqué.
 
 ## Publier une mise à jour
 
