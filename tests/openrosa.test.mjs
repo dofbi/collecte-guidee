@@ -58,3 +58,34 @@ test("proxy : code refusé, succès, doublon, erreur Kobo", async () => {
   assert.equal((await traiterEnvoi(req({ code: "ABC", instanceID: obs.instanceID, xml }), env, faux(500))).status, 502);
   assert.equal((await traiterEnvoi(req({ code: "XYZ", instanceID: obs.instanceID, xml }), env, faux(201))).status, 400, "code différent de celui du XML");
 });
+
+test("proxy : repli sur identifiant et mot de passe, message de Kobo relayé", async () => {
+  const env = (k) => ({ COLLECT_CODES: "ABC", KOBO_SUBMISSION_URL: "https://kobo.test/submission", KOBO_FORM_ID: "aB3cD4", KOBO_TOKEN: "t", KOBO_USERNAME: "u", KOBO_PASSWORD: "p" })[k];
+  const xml = versXml(proto, obs);
+  const req = () => new Request("https://app.test/submit", { method: "POST", body: JSON.stringify({ code: "ABC", instanceID: obs.instanceID, xml }) });
+  const auths = [];
+  const kobo = async (url, init) => { auths.push(init.headers.Authorization.split(" ")[0]); return new Response("", { status: init.headers.Authorization.startsWith("Basic") ? 201 : 401 }); };
+  assert.equal((await traiterEnvoi(req(), env, kobo)).status, 200);
+  assert.deepEqual(auths, ["Token", "Basic"]);
+  const refus = async () => new Response('<OpenRosaResponse><message nature="">Form does not exist on this account</message></OpenRosaResponse>', { status: 404 });
+  const corps = await (await traiterEnvoi(req(), env, refus)).json();
+  assert.equal(corps.erreur, "kobo_404");
+  assert.equal(corps.detail, "Form does not exist on this account");
+});
+
+test("proxy : diagnostic de configuration sans révéler de secret", async () => {
+  const vide = await (await traiterEnvoi(new Request("https://app.test/submit"), () => undefined)).json();
+  assert.equal(vide.configure, false);
+  assert.ok(vide.variables_manquantes.includes("KOBO_FORM_ID"));
+  const env = (k) => ({ COLLECT_CODES: "ABC", KOBO_SUBMISSION_URL: "https://kobo.test/submission", KOBO_FORM_ID: "aB3cD4", KOBO_TOKEN: "secret" })[k];
+  const d = await (await traiterEnvoi(new Request("https://app.test/submit?verifier=1"), env, async () => new Response(null, { status: 204 }))).json();
+  assert.deepEqual(d.kobo, [{ authentification: "token", statut: 204, accepte: true }]);
+  assert.doesNotMatch(JSON.stringify(d), /secret/);
+});
+
+test("envoi : le code collecteur actuel est inscrit dans le XML", async () => {
+  const { avecCode } = await import("../src/sync.js");
+  const sansCode = versXml(proto, { ...obs, code: "" });
+  assert.match(avecCode(sansCode, "ABC"), /<code_collecteur>ABC<\/code_collecteur>\n\s*<protocole>/);
+  assert.match(avecCode(versXml(proto, obs), "NEW"), /<code_collecteur>NEW<\/code_collecteur>/);
+});

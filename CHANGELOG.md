@@ -1,5 +1,13 @@
 # Journal des versions
 
+## 1.0.1 — 30 septembre 2026
+
+- Diagnostic d'envoi : `GET /.netlify/functions/submit` liste les variables manquantes ; `?verifier=1` teste l'accès au serveur Kobo, sans révéler de secret.
+- Le message d'erreur renvoyé par KoboToolbox est affiché dans l'app.
+- Si le jeton d'API est refusé et qu'un identifiant est configuré, le proxy réessaie en authentification Basic.
+- Le code collecteur saisi après la fin d'une observation est bien pris en compte à l'envoi.
+- Codes collecteurs : guillemets et espaces tolérés dans `COLLECT_CODES` ; une liste vide est signalée comme erreur de configuration, et le diagnostic indique le nombre de codes lus.
+
 ## 1.0.0 — 30 septembre 2026
 
 - Application web progressive (PWA) installable, utilisable hors ligne.
