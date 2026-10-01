@@ -1,5 +1,20 @@
 # Journal des versions
 
+## 1.1.0 — 1er octobre 2026
+
+Règles de collecte du contrat du 1er octobre 2026 (voir `docs/regles-de-collecte.md`). **Le formulaire Kobo change : remplacez-le (*Replace form*) avant de publier l'app.**
+
+- Présence à quatre états et portée du relevé (tronc commun).
+- Quatre formes de quantité (exacte, fourchette, minimum seul, inconnue), sans valeur par défaut ; une vue partielle transforme un comptage en minimum.
+- Méthode explicite (comptage, structure, témoignage, document, bande de jugement) et type de source.
+- Propos ou document rapporté conservé tel quel, même avec un montant.
+- Fourniture facultative sur trois axes indépendants, « non recueilli » par défaut.
+- Historique : refaire un poste conserve la saisie précédente ; champ « fait à compléter ».
+- Contexte facultatif : événement, hors événement ou indéterminé.
+- Position GPS facultative, jamais automatique, désactivable (`gps` dans `config/instance.json`).
+- Écran « Relire avant envoi » ; une observation en attente peut être reprise en modification.
+- Protocole `mapomo_v1` 1.1.0, formulaire Kobo régénéré ; documentation des REST Services de Kobo.
+
 ## 1.0.2 — 30 septembre 2026
 
 - Le proxy inscrit lui-même le code collecteur validé dans l'observation envoyée à Kobo : plus d'erreur `code_incoherent` quand le téléphone a préparé l'observation avec une ancienne version de l'app ou sans code.

@@ -15,5 +15,6 @@
     "fr": "La ligne part dans la file de l'analyste désigné de votre équipe.",
     "en": "The line goes to your team's designated analyst queue."
   },
-  "depot": "https://github.com/dofbi/collecte-guidee"
+  "depot": "https://github.com/dofbi/collecte-guidee",
+  "gps": "facultatif"
 }

@@ -9,7 +9,7 @@
 ## Étapes
 
 1. **Copiez le dépôt** (fork) ou utilisez le bouton « Deploy to Netlify » du README.
-2. **Adaptez l'instance** dans `config/instance.json` : nom, couleur, langue par défaut, lien vers votre dépôt.
+2. **Adaptez l'instance** dans `config/instance.json` : nom, couleur, langue par défaut, lien vers votre dépôt, et `gps` (`"facultatif"` ou `"desactive"` si la position met vos observateurs en danger).
 3. **Choisissez le protocole** : copiez un exemple de `config/exemples/` vers `config/protocole.json`, ou écrivez le vôtre ([adapter-le-protocole.md](adapter-le-protocole.md)).
 4. **Générez** : `npm run generer`, puis committez `kobo/` et `manifest.webmanifest`.
 5. **Créez le projet Kobo** à partir de `kobo/<id>.xlsx`.

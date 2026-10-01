@@ -14,7 +14,10 @@ export async function envoyerFile({ url, purge }, notifier = () => {}) {
     const code = await reglages.lire("code", "");
     const liste = (await observations.lister()).filter((o) => o.statut === "en_attente" || o.statut === "erreur");
     if (!liste.length || !code || !navigator.onLine) return;
-    for (const obs of liste) {
+    for (const candidate of liste) {
+      // L'observateur a pu la reprendre en modification entre-temps : on relit son état.
+      const obs = await observations.lire(candidate.id);
+      if (!obs || !["en_attente", "erreur"].includes(obs.statut) || !obs.xml) continue;
       let rep, corps = {};
       try {
         rep = await fetch(url, {

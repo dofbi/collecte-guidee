@@ -1,6 +1,6 @@
 {
   "name": "collecte-guidee",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "PWA hors ligne de collecte guidée pour l'observation des dépenses de campagne, avec KoboToolbox comme backend.",
   "type": "module",
   "license": "AGPL-3.0-only",
@@ -10,5 +10,7 @@
     "generer": "node scripts/generer.js",
     "dev": "python3 -m http.server 8000"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=18"
+  }
 }

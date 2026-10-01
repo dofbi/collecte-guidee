@@ -41,6 +41,23 @@ C'est le point OpenRosa utilisé par KoboCollect :
 
 Avant ce test, `https://<votre-site>/.netlify/functions/submit?verifier=1` doit indiquer `"accepte": true`. En cas d'échec, chaque message est expliqué dans [depannage.md](depannage.md).
 
-## Modifier le protocole après déploiement
+## Mettre à jour le formulaire (par exemple pour la version 1.1)
 
-Régénérez le `.xlsx`, remplacez le formulaire dans Kobo (**Replace form**), redéployez, puis publiez l'app (pensez à incrémenter `VERSION` dans `sw.js`). Les noms de champs restent stables tant que les identifiants du protocole ne changent pas.
+1. `npm run generer` (ou prenez le `kobo/<id>.xlsx` du dépôt).
+2. Dans Kobo : ouvrez le projet → **⋯ → Replace form** → choisissez le nouveau `.xlsx`.
+3. **Redeploy**. Kobo garde les anciennes soumissions et ajoute les nouvelles colonnes.
+4. Publiez l'app (pensez à incrémenter `VERSION` dans `sw.js`).
+
+Faites-le **avant** que les téléphones passent à la nouvelle version de l'app : sinon Kobo reçoit des champs qu'il ne connaît pas. Les observations préparées avec l'ancienne version restent acceptées.
+
+Les noms de champs restent stables tant que les identifiants du protocole ne changent pas.
+
+## Transmettre les données à une autre plateforme
+
+KoboToolbox sait **transférer automatiquement chaque nouvelle soumission** vers un autre serveur : ce sont les [REST Services](https://support.kobotoolbox.org/rest_services.html) (projet → *Settings → REST Services*).
+
+- Format **JSON** ou **XML**, authentification Basic, sélection des champs à transmettre, enveloppe JSON personnalisable.
+- Relances automatiques en cas d'échec (après 1 min, 10 min puis 100 min) et notification par courriel.
+- **Seule la création déclenche l'envoi** : une soumission modifiée dans Kobo n'est pas retransmise. C'est pourquoi l'app ne modifie jamais une observation reçue : une correction sera une nouvelle soumission liée.
+
+C'est la voie recommandée pour alimenter la plateforme Mapomo ou tout autre outil d'analyse, sans changer l'app.

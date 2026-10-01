@@ -1,7 +1,8 @@
 // Application : écrans, navigation et liaison entre le moteur (lib/engine.js),
 // le stockage local (src/store.js) et la file d'envoi (src/sync.js).
 
-import { valider, normaliser, t, indexChamps, libelleValeur } from "../lib/protocole.js";
+import { valider, normaliser, t, libelleValeur } from "../lib/protocole.js";
+import { FOURNITURE, ORIGINE_FOURNITURE, NON_RECUEILLI } from "../lib/commun.js";
 import * as moteur from "../lib/engine.js";
 import { versXml, uuid } from "../lib/openrosa.js";
 import { observations, reglages, persistant } from "./store.js";
@@ -74,7 +75,7 @@ function aller(vue, patch = {}) {
 }
 
 async function rendre() {
-  const vues = { accueil: vueAccueil, obs: vueObservation, q: vueQuestion, fin: vueFinPoste, reglages: vueReglages, apropos: vueAPropos };
+  const vues = { accueil: vueAccueil, obs: vueObservation, q: vueQuestion, fin: vueFinPoste, fourniture: vueFourniture, relire: vueRelire, reglages: vueReglages, apropos: vueAPropos };
   const contenu = S.erreursProto.length ? vueProtocoleInvalide() : await vues[S.vue]();
   racine.replaceChildren(...[barre(), S.majDispo ? bandeauMaj() : null, contenu].filter(Boolean));
   const focus = racine.querySelector("[data-focus]");
@@ -147,7 +148,30 @@ async function ouvrirObs(id) {
 const sauver = () => observations.ecrire(S.obs);
 
 // ---------- Observation ----------
-const evtComplet = () => S.proto.evenement.champs.every((c) => c.facultatif || (S.obs.evenement[c.id] !== undefined && S.obs.evenement[c.id] !== ""));
+const visible = (c) => Object.entries(c.si || {}).every(([k, v]) => String(S.obs.evenement[k]) === String(v));
+const evtComplet = () => S.proto.evenement.champs.filter(visible).every((c) => c.facultatif || (S.obs.evenement[c.id] !== undefined && S.obs.evenement[c.id] !== ""));
+const gpsActif = () => S.instance.gps !== "desactive" && "geolocation" in navigator;
+
+function blocPosition(editable) {
+  const o = S.obs;
+  if (!gpsActif()) return null;
+  if (o.position) {
+    return h("div", { class: "field" }, h("span", { class: "flabel" }, tr("positionAjoutee")),
+      h("p", { class: "muted small" }, `${o.position.lat.toFixed(5)}, ${o.position.lon.toFixed(5)} · ± ${Math.round(o.position.precision || 0)} m`),
+      editable ? h("button", { class: "btn ghost small", type: "button", onclick: async () => { delete o.position; await sauver(); rendre(); } }, tr("positionRetirer")) : null);
+  }
+  if (!editable) return null;
+  return h("div", { class: "field" },
+    h("button", { class: "btn ghost small", type: "button", onclick: (e) => {
+      e.currentTarget.textContent = tr("positionEnCours"); e.currentTarget.disabled = true;
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        o.position = { lat: pos.coords.latitude, lon: pos.coords.longitude, alt: pos.coords.altitude ?? 0, precision: pos.coords.accuracy, le: new Date(pos.timestamp).toISOString() };
+        await sauver(); S.message = ""; rendre();
+      }, () => { S.message = tr("positionRefusee"); rendre(); }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+    } }, tr("position")),
+    h("p", { class: "muted small" }, tr("positionAide")),
+    S.message && S.vue === "obs" ? h("p", { class: "muted small" }, S.message) : null);
+}
 
 function puce(r) {
   if (!r) return h("span", { class: "chip todo" }, tr("aFaire"));
@@ -158,7 +182,7 @@ function puce(r) {
 
 async function vueObservation() {
   const o = S.obs, editable = o.statut === "brouillon";
-  const champsEvt = S.proto.evenement.champs.map((c) => {
+  const champsEvt = S.proto.evenement.champs.filter(visible).map((c) => {
     const v = o.evenement[c.id];
     const maj = (x) => { o.evenement[c.id] = x; sauver().then(() => { if (c.type === "segment") rendre(); }); };
     if (c.type === "segment") return segment({ label: tx(c.label), valeur: v, options: c.options.map((x) => ({ v: x.v, texte: tx(x.label) })), onchange: maj });
@@ -168,7 +192,8 @@ async function vueObservation() {
   const ok = evtComplet();
   return h("main", { class: "page" },
     h("button", { class: "btn ghost small", type: "button", onclick: () => aller("accueil") }, tr("retour")),
-    h("section", { class: "card" }, h("h2", {}, tr("evenement")), h("fieldset", { class: "fields", disabled: !editable ? true : null }, champsEvt)),
+    !editable && o.statut !== "envoye" ? h("button", { class: "btn", type: "button", onclick: () => remettreEnBrouillon(o) }, tr("modifierAvantEnvoi")) : null,
+    h("section", { class: "card" }, h("h2", {}, tr("evenement")), h("fieldset", { class: "fields", disabled: !editable ? true : null }, champsEvt), blocPosition(editable)),
     h("section", { class: "card" }, h("h2", {}, tr("postes")),
       !ok ? h("p", { class: "muted" }, tr("evtIncomplet")) : null,
       h("ul", { class: "postes" }, S.proto.postes.map((p) => {
@@ -185,14 +210,46 @@ async function vueObservation() {
 function ficheResume() {
   const lignes = S.proto.postes.filter((p) => S.obs.postes[p.id]).map((p) => {
     const r = S.obs.postes[p.id];
-    return h("tr", {}, h("th", { scope: "row" }, tx(p.label)), h("td", { class: "num" }, r.affichage[L()] ?? ""), h("td", {}, tr(`prov.${r.provenance}`)),
+    return h("tr", {}, h("th", { scope: "row" }, tx(p.label)), h("td", { class: "num" }, r.affichage[L()] ?? ""),
+      h("td", { class: "num" }, r.quantite ? `${tr("quantite")} ${moteur.formaterQuantite(r.quantite, L())}` : "—"), h("td", {}, tr(`prov.${r.provenance}`)),
       h("td", {}, r.confiance ? tr(`conf.${r.confiance}`) : "—"), h("td", {}, r.analyste ? tr("versAnalyste") : "—"));
   });
   if (!lignes.length) return null;
   return h("section", { class: "card" }, h("h2", {}, tr("fiche")), h("div", { class: "table-wrap" }, h("table", {}, h("tbody", {}, lignes))));
 }
 
-async function terminerObs() {
+function terminerObs() { aller("relire"); }
+
+async function remettreEnBrouillon(o) {
+  const frais = await observations.lire(o.id);
+  if (!frais || frais.statut === "envoye") return aller("accueil");
+  frais.statut = "brouillon"; delete frais.xml; frais.erreur = null;
+  await observations.ecrire(frais);
+  aller("obs", { obs: frais });
+}
+
+function vueRelire() {
+  const o = S.obs;
+  const evt = S.proto.evenement.champs.filter(visible).filter((c) => o.evenement[c.id] !== undefined && o.evenement[c.id] !== "")
+    .map((c) => h("li", {}, h("b", {}, `${tx(c.label)} : `), c.type === "segment" ? libelleValeur({ type: "segment", options: c.options }, o.evenement[c.id], L()) : String(o.evenement[c.id])));
+  if (o.position) evt.push(h("li", {}, h("b", {}, `${tr("positionAjoutee")} : `), `± ${Math.round(o.position.precision || 0)} m`));
+  const faits = S.proto.postes.filter((p) => o.postes[p.id]);
+  return h("main", { class: "page" },
+    h("button", { class: "btn ghost small", type: "button", onclick: () => aller("obs") }, tr("revenirObs")),
+    h("section", { class: "card" }, h("h1", { class: "question" }, tr("relire")), h("p", { class: "help" }, tr("relireAide")),
+      h("h2", {}, tr("evenement")), h("ul", { class: "recap" }, evt),
+      h("button", { class: "btn ghost small", type: "button", onclick: () => aller("obs") }, tr("modifier"))),
+    h("section", { class: "card" }, h("h2", {}, tr("postes")),
+      faits.length ? h("ul", { class: "postes" }, faits.map((p) => {
+        const r = o.postes[p.id];
+        return h("li", { class: "relire-ligne" },
+          h("div", {}, h("b", {}, tx(p.label)), h("p", { class: "muted small" }, [r.affichage[L()], r.quantite ? `${tr("quantite")} ${moteur.formaterQuantite(r.quantite, L())}` : null, tr(`presence.${r.presence}`)].filter(Boolean).join(" · "))),
+          h("button", { class: "btn ghost small", type: "button", onclick: () => commencerPoste(p) }, tr("modifier")));
+      })) : h("p", { class: "muted" }, tr("aucunPoste"))),
+    h("button", { class: "btn big", type: "button", "data-focus": "", onclick: envoyerObs }, tr("envoyer")));
+}
+
+async function envoyerObs() {
   const o = S.obs;
   o.fin = new Date().toISOString();
   o.code = await reglages.lire("code", "");
@@ -261,6 +318,7 @@ function soumettre() {
     S.message = r.erreurs.includes("valide") ? tr("regleNonRespectee") : tr("champsManquants");
     return rendre();
   }
+  if (r.fin) return finirPoste(r.fin);
   aller("q", { etat: r.etat, saisie: {} });
 }
 
@@ -271,25 +329,62 @@ function precedent() {
 }
 
 async function finirPoste(res) {
+  // Rien ne se détruit : refaire un poste conserve la saisie précédente dans l'historique.
+  const avant = S.obs.postes[S.poste.id];
+  if (avant) {
+    const { historique = [], ...prec } = avant;
+    res.historique = [...historique, { termine: prec.termine, presence: prec.presence, quantite: prec.quantite, methode: prec.methode, affichage: prec.affichage, chemin: prec.chemin, valeurs: prec.valeurs }];
+    res.fourniture = avant.fourniture; res.complement = avant.complement;
+  }
   S.obs.postes[S.poste.id] = res;
   await sauver();
   aller("fin", { resultat: res });
 }
 
 function vueFinPoste() {
-  const r = S.resultat, p = S.poste;
+  const p = S.poste, r = S.obs.postes[p.id] || S.resultat;
   const suivant = S.proto.postes.find((x) => !S.obs.postes[x.id]);
+  const presente = r.presence === "presente";
   return h("main", { class: "page" }, h("section", { class: "card step" },
     h("span", { class: "qnum" }, `${tx(p.label)} · ${tr("enregistre")}`),
     h("p", { class: "big-result" }, r.affichage[L()] ?? ""),
-    h("div", { class: "crumbs" }, h("span", {}, tr(`prov.${r.provenance}`)), r.confiance ? h("span", {}, tr(`conf.${r.confiance}`)) : null, r.analyste ? h("span", {}, tr("versAnalyste")) : null),
+    h("div", { class: "crumbs" },
+      r.presence ? h("span", {}, tr(`presence.${r.presence}`)) : null,
+      r.quantite ? h("span", {}, `${tr("quantite")} ${moteur.formaterQuantite(r.quantite, L())}`) : null,
+      h("span", {}, tr(`prov.${r.provenance}`)), r.confiance ? h("span", {}, tr(`conf.${r.confiance}`)) : null,
+      r.analyste ? h("span", {}, tr("versAnalyste")) : null,
+      r.historique?.length ? h("span", {}, `${r.historique.length} ${tr("historique")}`) : null),
     r.analyste && S.instance.analyste ? h("p", { class: "calc" }, tx(S.instance.analyste)) : null,
     r.note ? h("p", { class: "help" }, r.note[L()] ?? "") : null,
+    presente ? texte({ id: "complement", label: tr("complement"), valeur: r.complement || "", onchange: (x) => { r.complement = x.trim() || null; sauver(); } }) : null,
+    presente ? h("p", { class: "muted small" }, tr("complementAide")) : null,
+    presente && p.fourniture ? h("button", { class: "btn ghost small", type: "button", onclick: () => aller("fourniture") },
+      r.fourniture ? `✓ ${tr("fournitureRenseignee")}` : tr("fourniture")) : null,
     h("p", { class: "muted small" }, `${tr("chemin")} : ${r.chemin.map((x) => libelleEtape(p, x)).join(" → ")}`),
     h("div", { class: "nav" },
       h("button", { class: "btn ghost", type: "button", onclick: () => commencerPoste(p) }, tr("refaire")),
       suivant ? h("button", { class: "btn", type: "button", "data-focus": "", onclick: () => commencerPoste(suivant) }, `${tr("posteSuivant")} : ${tx(suivant.label)}`)
         : h("button", { class: "btn", type: "button", "data-focus": "", onclick: () => aller("obs") }, tr("voirFiche")))));
+}
+
+// Fourniture : trois axes indépendants, chacun avec son origine (observé ou rapporté).
+function vueFourniture() {
+  const p = S.poste, r = S.obs.postes[p.id];
+  const f = { ...NON_RECUEILLI, ...(r.fourniture || {}) };
+  const champs = FOURNITURE.flatMap((axe) => [
+    h("h2", {}, tx(axe.label)),
+    axe.texte ? texte({ id: `f-${axe.texte}`, label: tx(axe.aideTexte), valeur: f[axe.texte] || "", onchange: (x) => { f[axe.texte] = x.trim() || undefined; } }) : null,
+    segment({ label: tx(axe.label), valeur: f[axe.id], options: axe.options.map((o) => ({ v: o.v, texte: tx(o.label) })), onchange: (x) => { f[axe.id] = x; } }),
+    segment({ label: tr("origine"), valeur: f[axe.origine], options: ORIGINE_FOURNITURE.options.map((o) => ({ v: o.v, texte: tx(o.label) })), onchange: (x) => { f[axe.origine] = x; } })
+  ]);
+  return h("main", { class: "page" },
+    h("button", { class: "btn ghost small", type: "button", onclick: () => aller("fin") }, tr("retour")),
+    h("section", { class: "card" }, h("h1", { class: "question" }, `${tx(p.label)} · ${tr("fourniture")}`), h("p", { class: "help" }, tr("fournitureAide")),
+      h("div", { class: "fields" }, champs,
+        h("button", { class: "btn", type: "button", onclick: async () => {
+          for (const k of Object.keys(f)) if (f[k] === undefined) delete f[k];
+          r.fourniture = f; await sauver(); aller("fin");
+        } }, tr("enregistrerFourniture")))));
 }
 
 // ---------- Réglages et à propos ----------

@@ -1,4 +1,7 @@
 list_name,name,label::Français (fr),label::English (en)
+l__evt__contexte,evenement,Un événement,An event
+l__evt__contexte,hors_evenement,Hors événement,No event
+l__evt__contexte,indetermine,Je ne sais pas,I don't know
 l__evt__type,defile,Défilé,Parade
 l__evt__type,meeting,Meeting,Rally
 l__evt__type,porte_a_porte,Porte-à-porte,Door-to-door
@@ -8,31 +11,52 @@ l__evt__echelle,commune,Commune,Municipality
 l__evt__echelle,ville,Ville,City
 l__evt__echelle,region,Région,Region
 l__vehicules__source,vu,Je le vois,I can see it
-l__vehicules__source,dit,On me l'a dit,Someone told me
+l__vehicules__source,dit,"On me l'a dit, ou je l'ai lu","I was told, or read it"
 l__vehicules__source,pas_vu,Je ne le vois pas,I cannot see it
+l__vehicules__vue_portee,complete,Tout le dispositif,All of it
+l__vehicules__vue_portee,partielle,Une partie seulement,Only part of it
 l__vehicules__rapporte,participant,Un participant,A participant
 l__vehicules__rapporte,organisateur,Un organisateur,An organiser
-l__vehicules__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
-l__vehicules__rapporte,autre,Autre source,Other source
-l__vehicules__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
-l__vehicules__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__vehicules__rapporte,fournisseur,Un fournisseur ou prestataire,A supplier or vendor
+l__vehicules__rapporte,document,Un document,A document
+l__vehicules__absent,absent,Il n'y en a pas,There is none
+l__vehicules__absent,hors_champ,Hors de ma vue,Out of my sight
+l__vehicules__absent,indetermine,Je ne peux pas dire,I cannot tell
 l__vehicules__deja_vus,oui,"Oui, sur un autre événement","Yes, at another event"
 l__vehicules__deja_vus,non,Non,No
 l__vehicules__deja_vus,nsp,Je ne sais pas,I don't know
 l__vehicules__confiance,sur,Sûr,Sure
 l__vehicules__confiance,assez,Assez sûr,Fairly sure
 l__vehicules__confiance,peu,Peu sûr,Not sure
+l__fournisseur_lien,candidat,Lié au candidat,Linked to the candidate
+l__fournisseur_lien,parti,Lié au parti,Linked to the party
+l__fournisseur_lien,aucun_lien_declare,Aucun lien déclaré,No declared link
+l__fournisseur_lien,inconnu,Je ne sais pas,I don't know
+l__fournisseur_lien,non_recueilli,Non recueilli,Not collected
+l__origine,observe,Observé,Observed
+l__origine,rapporte,Rapporté,Reported
+l__contrepartie,facture,Facturé,Invoiced
+l__contrepartie,offert,Offert,Free of charge
+l__contrepartie,partiellement_offert,Partiellement offert,Partly free
+l__contrepartie,inconnue,Je ne sais pas,I don't know
+l__contrepartie,non_recueillie,Non recueillie,Not collected
+l__reglement,regle,Réglé,Paid
+l__reglement,partiellement_regle,Partiellement réglé,Partly paid
+l__reglement,non_regle,Non réglé,Not paid
+l__reglement,inconnu,Je ne sais pas,I don't know
+l__reglement,non_recueilli,Non recueilli,Not collected
 l__chaises__source,vu,Je le vois,I can see it
-l__chaises__source,dit,On me l'a dit,Someone told me
+l__chaises__source,dit,"On me l'a dit, ou je l'ai lu","I was told, or read it"
 l__chaises__source,pas_vu,Je ne le vois pas,I cannot see it
-l__chaises__vue,toutes,"Oui, toutes","Yes, all of them"
-l__chaises__vue,partie,En partie,Only some
+l__chaises__vue_portee,complete,Tout le dispositif,All of it
+l__chaises__vue_portee,partielle,Une partie seulement,Only part of it
 l__chaises__rapporte,participant,Un participant,A participant
 l__chaises__rapporte,organisateur,Un organisateur,An organiser
-l__chaises__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
-l__chaises__rapporte,autre,Autre source,Other source
-l__chaises__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
-l__chaises__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__chaises__rapporte,fournisseur,Un fournisseur ou prestataire,A supplier or vendor
+l__chaises__rapporte,document,Un document,A document
+l__chaises__absent,absent,Il n'y en a pas,There is none
+l__chaises__absent,hors_champ,Hors de ma vue,Out of my sight
+l__chaises__absent,indetermine,Je ne peux pas dire,I cannot tell
 l__chaises__categorie,standard,Standard,Standard
 l__chaises__categorie,vip,VIP,VIP
 l__chaises__categorie,mixte,Les deux,Both
@@ -40,16 +64,19 @@ l__chaises__confiance,sur,Sûr,Sure
 l__chaises__confiance,assez,Assez sûr,Fairly sure
 l__chaises__confiance,peu,Peu sûr,Not sure
 l__foule__source,vu,Je le vois,I can see it
-l__foule__source,dit,On me l'a dit,Someone told me
+l__foule__source,dit,"On me l'a dit, ou je l'ai lu","I was told, or read it"
 l__foule__source,pas_vu,Je ne le vois pas,I cannot see it
-l__foule__entrer,oui,Oui,Yes
-l__foule__entrer,non,Non,No
+l__foule__vue_portee,complete,Tout le dispositif,All of it
+l__foule__vue_portee,partielle,Une partie seulement,Only part of it
 l__foule__rapporte,participant,Un participant,A participant
 l__foule__rapporte,organisateur,Un organisateur,An organiser
-l__foule__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
-l__foule__rapporte,autre,Autre source,Other source
-l__foule__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
-l__foule__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__foule__rapporte,fournisseur,Un fournisseur ou prestataire,A supplier or vendor
+l__foule__rapporte,document,Un document,A document
+l__foule__absent,absent,Il n'y en a pas,There is none
+l__foule__absent,hors_champ,Hors de ma vue,Out of my sight
+l__foule__absent,indetermine,Je ne peux pas dire,I cannot tell
+l__foule__entrer,oui,Oui,Yes
+l__foule__entrer,non,Non,No
 l__foule__type_lieu,place,Place,Square
 l__foule__type_lieu,rue,Rue,Street
 l__foule__type_lieu,stade,Stade,Stadium
@@ -79,28 +106,40 @@ l__foule__confiance,sur,Sûr,Sure
 l__foule__confiance,assez,Assez sûr,Fairly sure
 l__foule__confiance,peu,Peu sûr,Not sure
 l__objets__source,vu,Je le vois,I can see it
-l__objets__source,dit,On me l'a dit,Someone told me
+l__objets__source,dit,"On me l'a dit, ou je l'ai lu","I was told, or read it"
 l__objets__source,pas_vu,Je ne le vois pas,I cannot see it
+l__objets__vue_portee,complete,Tout le dispositif,All of it
+l__objets__vue_portee,partielle,Une partie seulement,Only part of it
+l__objets__rapporte,participant,Un participant,A participant
+l__objets__rapporte,organisateur,Un organisateur,An organiser
+l__objets__rapporte,fournisseur,Un fournisseur ou prestataire,A supplier or vendor
+l__objets__rapporte,document,Un document,A document
+l__objets__absent,absent,Il n'y en a pas,There is none
+l__objets__absent,hors_champ,Hors de ma vue,Out of my sight
+l__objets__absent,indetermine,Je ne peux pas dire,I cannot tell
 l__objets__objet,tshirts,"T-shirts, casquettes","T-shirts, caps"
 l__objets__objet,tracts,Tracts,Leaflets
 l__objets__objet,nourriture,"Nourriture, boissons","Food, drinks"
 l__objets__objet,argent,Argent,Money
 l__objets__objet,pagnes,Pagnes,Wax fabric
 l__objets__objet,parapluies,Parapluies,Umbrellas
-l__objets__rapporte,participant,Un participant,A participant
-l__objets__rapporte,organisateur,Un organisateur,An organiser
-l__objets__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
-l__objets__rapporte,autre,Autre source,Other source
-l__objets__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
-l__objets__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
 l__objets__dispersion,oui,Oui,Yes
 l__objets__dispersion,pas_encore,Pas encore,Not yet
 l__objets__confiance,sur,Sûr,Sure
 l__objets__confiance,assez,Assez sûr,Fairly sure
 l__objets__confiance,peu,Peu sûr,Not sure
 l__sono__source,vu,Je le vois,I can see it
-l__sono__source,dit,On me l'a dit,Someone told me
+l__sono__source,dit,"On me l'a dit, ou je l'ai lu","I was told, or read it"
 l__sono__source,pas_vu,Je ne le vois pas,I cannot see it
+l__sono__vue_portee,complete,Tout le dispositif,All of it
+l__sono__vue_portee,partielle,Une partie seulement,Only part of it
+l__sono__rapporte,participant,Un participant,A participant
+l__sono__rapporte,organisateur,Un organisateur,An organiser
+l__sono__rapporte,fournisseur,Un fournisseur ou prestataire,A supplier or vendor
+l__sono__rapporte,document,Un document,A document
+l__sono__absent,absent,Il n'y en a pas,There is none
+l__sono__absent,hors_champ,Hors de ma vue,Out of my sight
+l__sono__absent,indetermine,Je ne peux pas dire,I cannot tell
 l__sono__largeur_estrade,4,4 m,4 m
 l__sono__largeur_estrade,8,8 m,8 m
 l__sono__largeur_estrade,12,12 m,12 m
@@ -113,26 +152,23 @@ l__sono__classe_sono,b,B · moyenne,B · medium
 l__sono__classe_sono,c,C · grande,C · large
 l__sono__operateur,oui,Oui,Yes
 l__sono__operateur,non,Non,No
-l__sono__rapporte,participant,Un participant,A participant
-l__sono__rapporte,organisateur,Un organisateur,An organiser
-l__sono__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
-l__sono__rapporte,autre,Autre source,Other source
-l__sono__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
-l__sono__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
 l__sono__confiance,sur,Sûr,Sure
 l__sono__confiance,assez,Assez sûr,Fairly sure
 l__sono__confiance,peu,Peu sûr,Not sure
 l__services__source,vu,Je le vois,I can see it
-l__services__source,dit,On me l'a dit,Someone told me
+l__services__source,dit,"On me l'a dit, ou je l'ai lu","I was told, or read it"
 l__services__source,pas_vu,Je ne le vois pas,I cannot see it
-l__services__comptable,oui,Oui,Yes
-l__services__comptable,non,Non,No
+l__services__vue_portee,complete,Tout le dispositif,All of it
+l__services__vue_portee,partielle,Une partie seulement,Only part of it
 l__services__rapporte,participant,Un participant,A participant
 l__services__rapporte,organisateur,Un organisateur,An organiser
-l__services__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
-l__services__rapporte,autre,Autre source,Other source
-l__services__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
-l__services__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__services__rapporte,fournisseur,Un fournisseur ou prestataire,A supplier or vendor
+l__services__rapporte,document,Un document,A document
+l__services__absent,absent,Il n'y en a pas,There is none
+l__services__absent,hors_champ,Hors de ma vue,Out of my sight
+l__services__absent,indetermine,Je ne peux pas dire,I cannot tell
+l__services__comptable,oui,Oui,Yes
+l__services__comptable,non,Non,No
 l__services__espacement,2,2 m,2 m
 l__services__espacement,5,5 m,5 m
 l__services__espacement,10,10 m,10 m
@@ -144,29 +180,35 @@ l__services__confiance,sur,Sûr,Sure
 l__services__confiance,assez,Assez sûr,Fairly sure
 l__services__confiance,peu,Peu sûr,Not sure
 l__artistes__source,vu,Je le vois,I can see it
-l__artistes__source,dit,On me l'a dit,Someone told me
+l__artistes__source,dit,"On me l'a dit, ou je l'ai lu","I was told, or read it"
 l__artistes__source,pas_vu,Je ne le vois pas,I cannot see it
+l__artistes__vue_portee,complete,Tout le dispositif,All of it
+l__artistes__vue_portee,partielle,Une partie seulement,Only part of it
+l__artistes__rapporte,participant,Un participant,A participant
+l__artistes__rapporte,organisateur,Un organisateur,An organiser
+l__artistes__rapporte,fournisseur,Un fournisseur ou prestataire,A supplier or vendor
+l__artistes__rapporte,document,Un document,A document
+l__artistes__absent,absent,Il n'y en a pas,There is none
+l__artistes__absent,hors_champ,Hors de ma vue,Out of my sight
+l__artistes__absent,indetermine,Je ne peux pas dire,I cannot tell
 l__artistes__notoriete,locale,Locale,Local
 l__artistes__notoriete,nationale,Nationale,National
 l__artistes__notoriete,internationale,Internationale,International
-l__artistes__rapporte,participant,Un participant,A participant
-l__artistes__rapporte,organisateur,Un organisateur,An organiser
-l__artistes__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
-l__artistes__rapporte,autre,Autre source,Other source
-l__artistes__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
-l__artistes__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
 l__artistes__confiance,sur,Sûr,Sure
 l__artistes__confiance,assez,Assez sûr,Fairly sure
 l__artistes__confiance,peu,Peu sûr,Not sure
 l__imprimes__source,vu,Je le vois,I can see it
-l__imprimes__source,dit,On me l'a dit,Someone told me
+l__imprimes__source,dit,"On me l'a dit, ou je l'ai lu","I was told, or read it"
 l__imprimes__source,pas_vu,Je ne le vois pas,I cannot see it
+l__imprimes__vue_portee,complete,Tout le dispositif,All of it
+l__imprimes__vue_portee,partielle,Une partie seulement,Only part of it
 l__imprimes__rapporte,participant,Un participant,A participant
 l__imprimes__rapporte,organisateur,Un organisateur,An organiser
-l__imprimes__rapporte,commercant,Un commerçant ou prestataire,A vendor or supplier
-l__imprimes__rapporte,autre,Autre source,Other source
-l__imprimes__absent,absent,"Absent, j'en suis sûr","Absent, I am sure"
-l__imprimes__absent,hors_champ,Hors champ ou masqué,Out of frame or hidden
+l__imprimes__rapporte,fournisseur,Un fournisseur ou prestataire,A supplier or vendor
+l__imprimes__rapporte,document,Un document,A document
+l__imprimes__absent,absent,Il n'y en a pas,There is none
+l__imprimes__absent,hors_champ,Hors de ma vue,Out of my sight
+l__imprimes__absent,indetermine,Je ne peux pas dire,I cannot tell
 l__imprimes__confiance,sur,Sûr,Sure
 l__imprimes__confiance,assez,Assez sûr,Fairly sure
 l__imprimes__confiance,peu,Peu sûr,Not sure

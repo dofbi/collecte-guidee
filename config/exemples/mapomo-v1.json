@@ -1,14 +1,14 @@
 {
   "$schema": "../schema.json",
   "id": "mapomo_v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "titre": {
     "fr": "Observation d'un événement de campagne",
     "en": "Campaign event observation"
   },
   "description": {
-    "fr": "Protocole issu de la Méthodologie v1 arrêtée le 29 septembre 2026 au Mapomo Innovation Lab (Saly). Règle-mère : comptage exact partout où c'est produisible, estimation structurée ailleurs, intervalle en dernier recours.",
-    "en": "Protocol derived from Methodology v1 adopted on 29 September 2026 at the Mapomo Innovation Lab (Saly). Core rule: exact count wherever it can be produced, structured estimate elsewhere, interval as a last resort."
+    "fr": "Protocole issu de la Méthodologie v1 arrêtée le 29 septembre 2026 au Mapomo Innovation Lab (Saly). Règle-mère : comptage exact partout où c'est produisible, estimation structurée ailleurs, intervalle en dernier recours. Version 1.1 : règles de collecte du contrat du 1er octobre 2026 (présence, portée, quatre formes de quantité, méthode, fourniture).",
+    "en": "Protocol derived from Methodology v1 adopted on 29 September 2026 at the Mapomo Innovation Lab (Saly). Core rule: exact count wherever it can be produced, structured estimate elsewhere, interval as a last resort. Version 1.1: collection rules from the 1 October 2026 contract (presence, scope, four quantity forms, method, supply)."
   },
   "langues": [
     "fr",
@@ -16,6 +16,37 @@
   ],
   "evenement": {
     "champs": [
+      {
+        "id": "contexte",
+        "type": "segment",
+        "label": {
+          "fr": "Contexte",
+          "en": "Context"
+        },
+        "options": [
+          {
+            "v": "evenement",
+            "label": {
+              "fr": "Un événement",
+              "en": "An event"
+            }
+          },
+          {
+            "v": "hors_evenement",
+            "label": {
+              "fr": "Hors événement",
+              "en": "No event"
+            }
+          },
+          {
+            "v": "indetermine",
+            "label": {
+              "fr": "Je ne sais pas",
+              "en": "I don't know"
+            }
+          }
+        ]
+      },
       {
         "id": "type",
         "type": "segment",
@@ -52,7 +83,10 @@
               "en": "Combination"
             }
           }
-        ]
+        ],
+        "si": {
+          "contexte": "evenement"
+        }
       },
       {
         "id": "echelle",
@@ -90,15 +124,18 @@
               "en": "Region"
             }
           }
-        ]
+        ],
+        "si": {
+          "contexte": "evenement"
+        }
       },
       {
         "id": "lieu",
         "type": "texte",
         "facultatif": true,
         "label": {
-          "fr": "Lieu (facultatif, sans coordonnées GPS)",
-          "en": "Place (optional, no GPS coordinates)"
+          "fr": "Lieu ou description (facultatif)",
+          "en": "Place or description (optional)"
         }
       }
     ]
@@ -171,7 +208,8 @@
             "fr": "{total_marques} marqués",
             "en": "{total_marques} branded"
           },
-          "suite": "non_marques"
+          "suite": "non_marques",
+          "methode": "comptage"
         },
         "non_marques": {
           "type": "compteurs",
@@ -225,7 +263,8 @@
             "fr": "{total_non_marques} non marqués",
             "en": "{total_non_marques} unbranded"
           },
-          "suite": "deja_vus"
+          "suite": "deja_vus",
+          "methode": "comptage"
         },
         "deja_vus": {
           "type": "choix",
@@ -278,9 +317,15 @@
           "affichage": {
             "fr": "{total_marques} marqués + {total_non_marques} non marqués{?deja_vus=oui: · doublon possible}",
             "en": "{total_marques} branded + {total_non_marques} unbranded{?deja_vus=oui: · possible duplicate}"
+          },
+          "methode": "comptage",
+          "quantite": {
+            "forme": "exacte",
+            "valeur": "total_marques + total_non_marques"
           }
         }
-      }
+      },
+      "fourniture": true
     },
     {
       "id": "chaises",
@@ -292,54 +337,11 @@
         "fr": "Rangées × chaises, VIP ou standard",
         "en": "Rows × chairs, VIP or standard"
       },
-      "entree": "vue",
+      "entree": "structure",
       "calculs": {
         "total_chaises": "rangees * par_rangee"
       },
       "noeuds": {
-        "vue": {
-          "type": "choix",
-          "question": {
-            "fr": "Voyez-vous toutes les rangées ?",
-            "en": "Can you see all the rows?"
-          },
-          "aide": {
-            "fr": "Les chaises ne se comptent pas une par une : on relève la structure.",
-            "en": "Chairs are not counted one by one: record the layout."
-          },
-          "options": [
-            {
-              "v": "toutes",
-              "label": {
-                "fr": "Oui, toutes",
-                "en": "Yes, all of them"
-              },
-              "sous": {
-                "fr": "de la première à la dernière",
-                "en": "from first to last"
-              },
-              "set": {
-                "partiel": "non"
-              },
-              "suite": "structure"
-            },
-            {
-              "v": "partie",
-              "label": {
-                "fr": "En partie",
-                "en": "Only some"
-              },
-              "sous": {
-                "fr": "je ne vois que les premiers rangs",
-                "en": "I only see the front rows"
-              },
-              "set": {
-                "partiel": "oui"
-              },
-              "suite": "structure"
-            }
-          ]
-        },
         "structure": {
           "type": "formulaire",
           "question": {
@@ -405,12 +407,14 @@
             "en": "{rangees} × {par_rangee} = {total_chaises} chairs"
           },
           "affichage": {
-            "fr": "≈ {total_chaises} chaises · {categorie}{?partiel=oui: · minimum visible}",
-            "en": "≈ {total_chaises} chairs · {categorie}{?partiel=oui: · visible minimum}"
+            "fr": "≈ {total_chaises} chaises · {categorie}{?portee=partielle: · minimum visible}",
+            "en": "≈ {total_chaises} chairs · {categorie}{?portee=partielle: · visible minimum}"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "structure"
         }
-      }
+      },
+      "fourniture": true
     },
     {
       "id": "foule",
@@ -639,7 +643,8 @@
             "fr": "≈ {estimation} personnes ({type_lieu})",
             "en": "≈ {estimation} people ({type_lieu})"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "structure"
         },
         "intervalle": {
           "type": "choix",
@@ -659,7 +664,12 @@
                 "fr": "Moins de 500",
                 "en": "Under 500"
               },
-              "suite": "confiance"
+              "suite": "confiance",
+              "quantite": {
+                "forme": "fourchette",
+                "basse": 0,
+                "haute": 500
+              }
             },
             {
               "v": "500_2000",
@@ -667,7 +677,12 @@
                 "fr": "500 à 2 000",
                 "en": "500 to 2,000"
               },
-              "suite": "confiance"
+              "suite": "confiance",
+              "quantite": {
+                "forme": "fourchette",
+                "basse": 500,
+                "haute": 2000
+              }
             },
             {
               "v": "2000_5000",
@@ -675,7 +690,12 @@
                 "fr": "2 000 à 5 000",
                 "en": "2,000 to 5,000"
               },
-              "suite": "confiance"
+              "suite": "confiance",
+              "quantite": {
+                "forme": "fourchette",
+                "basse": 2000,
+                "haute": 5000
+              }
             },
             {
               "v": "5000_10000",
@@ -683,7 +703,12 @@
                 "fr": "5 000 à 10 000",
                 "en": "5,000 to 10,000"
               },
-              "suite": "confiance"
+              "suite": "confiance",
+              "quantite": {
+                "forme": "fourchette",
+                "basse": 5000,
+                "haute": 10000
+              }
             },
             {
               "v": "plus_10000",
@@ -691,13 +716,18 @@
                 "fr": "Plus de 10 000",
                 "en": "Over 10,000"
               },
-              "suite": "confiance"
+              "suite": "confiance",
+              "quantite": {
+                "forme": "minimum_seul",
+                "basse": 10000
+              }
             }
           ],
           "affichage": {
             "fr": "{intervalle} personnes (intervalle)",
             "en": "{intervalle} people (range)"
-          }
+          },
+          "methode": "bande_de_jugement"
         }
       }
     },
@@ -911,9 +941,11 @@
             "fr": "{objet} : {part_assistance} % de l'assistance",
             "en": "{objet}: {part_assistance} % of the audience"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "structure"
         }
-      }
+      },
+      "fourniture": true
     },
     {
       "id": "sono",
@@ -1053,9 +1085,11 @@
             "fr": "Estrade {surface_estrade} m² · sono {classe_sono} · opérateur : {operateur}",
             "en": "Stage {surface_estrade} m² · sound {classe_sono} · operator: {operateur}"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "structure"
         }
-      }
+      },
+      "fourniture": true
     },
     {
       "id": "services",
@@ -1152,7 +1186,12 @@
             "fr": "{securite} sécurité · {hotesses} hôtesses · {photographes} photographes",
             "en": "{securite} security · {hotesses} hosts · {photographes} photographers"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "comptage",
+          "quantite": {
+            "forme": "exacte",
+            "valeur": "total_services"
+          }
         },
         "cordon": {
           "type": "formulaire",
@@ -1222,9 +1261,11 @@
             "fr": "≈ {agents_estimes} agents de sécurité (cordon)",
             "en": "≈ {agents_estimes} security agents (cordon)"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "structure"
         }
-      }
+      },
+      "fourniture": true
     },
     {
       "id": "artistes",
@@ -1236,9 +1277,9 @@
         "fr": "Nombre, notoriété",
         "en": "Number, fame"
       },
-      "entree": "presence",
+      "entree": "artistes_presents",
       "noeuds": {
-        "presence": {
+        "artistes_presents": {
           "type": "formulaire",
           "question": {
             "fr": "Artistes présents",
@@ -1303,9 +1344,15 @@
             "fr": "{nombre_artistes} artiste(s) · notoriété {notoriete}",
             "en": "{nombre_artistes} performer(s) · {notoriete} fame"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "comptage",
+          "quantite": {
+            "forme": "exacte",
+            "valeur": "nombre_artistes"
+          }
         }
-      }
+      },
+      "fourniture": true
     },
     {
       "id": "imprimes",
@@ -1350,9 +1397,15 @@
             "fr": "{affiches} affiches · {banderoles} banderoles",
             "en": "{affiches} posters · {banderoles} banners"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "comptage",
+          "quantite": {
+            "forme": "exacte",
+            "valeur": "affiches + banderoles"
+          }
         }
-      }
+      },
+      "fourniture": true
     }
   ]
 }

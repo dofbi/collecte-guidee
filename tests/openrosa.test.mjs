@@ -11,10 +11,10 @@ const proto = normaliser(JSON.parse(readFileSync(new URL("../config/exemples/map
 const p = proto.postes.find((x) => x.id === "chaises");
 let e = m.demarrer(p);
 e = m.choisir(proto, p, e, "vu").etat;
-e = m.choisir(proto, p, e, "toutes").etat;
+e = m.choisir(proto, p, e, "complete").etat;
 e = m.soumettre(proto, p, e, { rangees: 5, par_rangee: 10, categorie: "standard" }).etat;
 const fin = m.choisir(proto, p, e, "sur").fin;
-const obs = { instanceID: "uuid:3f2b8c1e-4a5d-4e6f-8a9b-0c1d2e3f4a5b", code: "ABC", debut: "2026-09-30T09:00:00Z", fin: "2026-09-30T09:20:00Z", evenement: { type: "meeting", echelle: "ville" }, postes: { chaises: fin } };
+const obs = { instanceID: "uuid:3f2b8c1e-4a5d-4e6f-8a9b-0c1d2e3f4a5b", code: "ABC", debut: "2026-09-30T09:00:00Z", fin: "2026-09-30T09:20:00Z", evenement: { contexte: "evenement", type: "meeting", echelle: "ville" }, position: { lat: 16.0326, lon: -16.5, alt: 4, precision: 12 }, postes: { chaises: fin } };
 
 test("le XML ne contient que des champs déclarés dans le XLSForm", () => {
   const xml = versXml(proto, obs);
@@ -24,6 +24,13 @@ test("le XML ne contient que des champs déclarés dans le XLSForm", () => {
   assert.match(xml, /<chaises__prov>C<\/chaises__prov>/);
   assert.match(xml, /<chaises__analyste>non<\/chaises__analyste>/);
   assert.doesNotMatch(xml, /<p__vehicules>/, "un poste non renseigné n'est pas envoyé");
+  assert.match(xml, /<chaises__presence>presente<\/chaises__presence>/);
+  assert.match(xml, /<chaises__methode>structure<\/chaises__methode>/);
+  assert.doesNotMatch(xml, /chaises__quantite_forme/, "pas de quantité inventée pour une estimation structurée");
+  assert.match(xml, /<chaises__contrepartie>non_recueillie<\/chaises__contrepartie>/, "fourniture non recueillie explicitement");
+  assert.match(xml, /<evt__position>16.0326 -16.5 4 12<\/evt__position>/);
+  const horsEvt = versXml(proto, { ...obs, evenement: { contexte: "hors_evenement", type: "meeting" } });
+  assert.doesNotMatch(horsEvt, /evt__type/, "un champ conditionnel masqué n'est pas envoyé");
 });
 
 test("la racine provisoire est remplacée par le formulaire Kobo", () => {

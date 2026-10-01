@@ -4,85 +4,318 @@
   "title": "Protocole de collecte guidée",
   "description": "Décrit l'événement et les postes observés. Le même fichier génère l'app et le formulaire KoboToolbox. Voir docs/adapter-le-protocole.md.",
   "type": "object",
-  "required": ["id", "version", "postes"],
+  "required": [
+    "id",
+    "version",
+    "postes"
+  ],
   "definitions": {
-    "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "description": "Minuscules, chiffres et _. Devient un nom de champ Kobo : ne plus le changer une fois la collecte lancée." },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "Minuscules, chiffres et _. Devient un nom de champ Kobo : ne plus le changer une fois la collecte lancée."
+    },
     "texte": {
       "oneOf": [
-        { "type": "string" },
-        { "type": "object", "additionalProperties": { "type": "string" }, "description": "Un texte par langue, ex. { \"fr\": \"…\", \"en\": \"…\" }" }
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Un texte par langue, ex. { \"fr\": \"…\", \"en\": \"…\" }"
+        }
       ]
     },
-    "expression": { "type": "string", "description": "Nombres, identifiants du poste, + - * / ( ), > >= < <= ==, and, or, sum(…), round(…)" },
+    "expression": {
+      "type": "string",
+      "description": "Nombres, identifiants du poste, + - * / ( ), > >= < <= ==, and, or, sum(…), round(…)"
+    },
     "option": {
       "type": "object",
-      "required": ["v", "label"],
+      "required": [
+        "v",
+        "label"
+      ],
       "properties": {
-        "v": { "type": ["string", "number"] },
-        "label": { "$ref": "#/definitions/texte" },
-        "sous": { "$ref": "#/definitions/texte" },
-        "set": { "type": "object", "additionalProperties": { "type": ["string", "number"] } },
-        "suite": { "type": "string" },
+        "v": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "label": {
+          "$ref": "#/definitions/texte"
+        },
+        "sous": {
+          "$ref": "#/definitions/texte"
+        },
+        "set": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number"
+            ]
+          }
+        },
+        "suite": {
+          "type": "string"
+        },
         "fin": {
           "type": "object",
-          "properties": { "affichage": { "$ref": "#/definitions/texte" }, "note": { "$ref": "#/definitions/texte" } }
+          "properties": {
+            "affichage": {
+              "$ref": "#/definitions/texte"
+            },
+            "note": {
+              "$ref": "#/definitions/texte"
+            },
+            "quantite": {
+              "$ref": "#/definitions/quantite"
+            }
+          }
+        },
+        "quantite": {
+          "$ref": "#/definitions/quantite"
         }
       }
     },
     "champ": {
       "type": "object",
-      "required": ["id", "label"],
+      "required": [
+        "id",
+        "label"
+      ],
       "properties": {
-        "id": { "$ref": "#/definitions/id" },
-        "type": { "enum": ["segment", "compteur", "texte"], "description": "Obligatoire dans un nœud « formulaire »" },
-        "label": { "$ref": "#/definitions/texte" },
-        "options": { "type": "array", "items": { "$ref": "#/definitions/option" } },
-        "max": { "type": "number" },
-        "facultatif": { "type": "boolean" }
+        "id": {
+          "$ref": "#/definitions/id"
+        },
+        "type": {
+          "enum": [
+            "segment",
+            "compteur",
+            "texte"
+          ],
+          "description": "Obligatoire dans un nœud « formulaire »"
+        },
+        "label": {
+          "$ref": "#/definitions/texte"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/option"
+          }
+        },
+        "max": {
+          "type": "number"
+        },
+        "facultatif": {
+          "type": "boolean"
+        },
+        "si": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number"
+            ]
+          },
+          "description": "Champ d'événement affiché seulement si un champ précédent a cette valeur"
+        }
       }
     },
     "noeud": {
       "type": "object",
-      "required": ["type", "question"],
+      "required": [
+        "type",
+        "question"
+      ],
       "properties": {
-        "type": { "enum": ["choix", "compteurs", "formulaire"] },
-        "question": { "$ref": "#/definitions/texte" },
-        "aide": { "$ref": "#/definitions/texte" },
-        "options": { "type": "array", "items": { "$ref": "#/definitions/option" } },
-        "champs": { "type": "array", "items": { "$ref": "#/definitions/champ" } },
-        "valide": { "$ref": "#/definitions/expression" },
-        "apercu": { "$ref": "#/definitions/texte" },
-        "affichage": { "$ref": "#/definitions/texte" },
-        "suite": { "type": "string" },
-        "dernier_recours": { "type": "boolean" }
+        "type": {
+          "enum": [
+            "choix",
+            "compteurs",
+            "formulaire"
+          ]
+        },
+        "question": {
+          "$ref": "#/definitions/texte"
+        },
+        "aide": {
+          "$ref": "#/definitions/texte"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/option"
+          }
+        },
+        "champs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/champ"
+          }
+        },
+        "valide": {
+          "$ref": "#/definitions/expression"
+        },
+        "apercu": {
+          "$ref": "#/definitions/texte"
+        },
+        "affichage": {
+          "$ref": "#/definitions/texte"
+        },
+        "suite": {
+          "type": "string"
+        },
+        "dernier_recours": {
+          "type": "boolean"
+        },
+        "methode": {
+          "enum": [
+            "comptage",
+            "structure",
+            "temoignage",
+            "document",
+            "bande_de_jugement"
+          ]
+        },
+        "quantite": {
+          "$ref": "#/definitions/quantite"
+        },
+        "fin": {
+          "type": "object",
+          "properties": {
+            "affichage": {
+              "$ref": "#/definitions/texte"
+            },
+            "note": {
+              "$ref": "#/definitions/texte"
+            },
+            "quantite": {
+              "$ref": "#/definitions/quantite"
+            }
+          }
+        }
       }
+    },
+    "quantite": {
+      "type": "object",
+      "required": [
+        "forme"
+      ],
+      "properties": {
+        "forme": {
+          "enum": [
+            "exacte",
+            "fourchette",
+            "minimum_seul",
+            "inconnue"
+          ]
+        },
+        "valeur": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "basse": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "haute": {
+          "type": [
+            "number",
+            "string"
+          ]
+        }
+      },
+      "description": "Quantité déclarée. Nombres ou expressions. Aucune valeur par défaut."
     }
   },
   "properties": {
-    "$schema": { "type": "string" },
-    "id": { "$ref": "#/definitions/id" },
-    "version": { "type": "string" },
-    "titre": { "$ref": "#/definitions/texte" },
-    "description": { "$ref": "#/definitions/texte" },
-    "langues": { "type": "array", "items": { "type": "string" } },
-    "commun": { "type": "object", "description": "Surcharge des textes du tronc commun (source, absent, rapporte, confiance)" },
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "$ref": "#/definitions/id"
+    },
+    "version": {
+      "type": "string"
+    },
+    "titre": {
+      "$ref": "#/definitions/texte"
+    },
+    "description": {
+      "$ref": "#/definitions/texte"
+    },
+    "langues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "commun": {
+      "type": "object",
+      "description": "Surcharge des textes du tronc commun (source, absent, rapporte, confiance)"
+    },
     "evenement": {
       "type": "object",
-      "properties": { "champs": { "type": "array", "items": { "$ref": "#/definitions/champ" } } }
+      "properties": {
+        "champs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/champ"
+          }
+        }
+      }
     },
     "postes": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["id", "label", "entree", "noeuds"],
+        "required": [
+          "id",
+          "label",
+          "entree",
+          "noeuds"
+        ],
         "properties": {
-          "id": { "$ref": "#/definitions/id" },
-          "label": { "$ref": "#/definitions/texte" },
-          "aide": { "$ref": "#/definitions/texte" },
-          "entree": { "type": "string" },
-          "calculs": { "type": "object", "additionalProperties": { "$ref": "#/definitions/expression" } },
-          "noeuds": { "type": "object", "additionalProperties": { "$ref": "#/definitions/noeud" } }
+          "id": {
+            "$ref": "#/definitions/id"
+          },
+          "label": {
+            "$ref": "#/definitions/texte"
+          },
+          "aide": {
+            "$ref": "#/definitions/texte"
+          },
+          "entree": {
+            "type": "string"
+          },
+          "calculs": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/definitions/expression"
+            }
+          },
+          "noeuds": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/definitions/noeud"
+            }
+          },
+          "fourniture": {
+            "type": "boolean",
+            "description": "Propose les trois axes de fourniture après l'enregistrement du poste"
+          }
         }
       }
     }

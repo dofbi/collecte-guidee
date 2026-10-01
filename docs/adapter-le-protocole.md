@@ -40,7 +40,9 @@ npm run generer     # valide votre protocole, régénère kobo/ et le manifest
 }
 ```
 
-Chaque poste commence automatiquement par le **tronc commun** (`source`, `absent`, `rapporte`, `confiance`) : « Je le vois » mène à votre nœud `entree`, « On me l'a dit » et « Je ne le vois pas » sont gérés pour vous. Terminez vos parcours par `"suite": "confiance"`.
+Chaque poste commence automatiquement par le **tronc commun** (`source`, `vue_portee`, `absent`, `rapporte`, `propos`, `confiance`) : « Je le vois » demande la portée (tout ou partie) puis mène à votre nœud `entree` ; « On me l'a dit » et « Je ne le vois pas » sont gérés pour vous (présence, source, propos). Terminez vos parcours par `"suite": "confiance"`.
+
+Ajoutez `"fourniture": true` à un poste pour proposer, après l'enregistrement, les trois axes de fourniture (qui fournit, contrepartie annoncée, règlement rapporté).
 
 ## Les trois types de nœuds
 
@@ -77,6 +79,28 @@ Chaque poste commence automatiquement par le **tronc commun** (`source`, `absent
 ### `formulaire` : plusieurs champs sur un écran
 
 Champs `segment` (boutons, avec `options`), `compteur` ou `texte` (`"facultatif": true` possible).
+
+## Méthode et quantité
+
+Les règles de collecte ([regles-de-collecte.md](regles-de-collecte.md)) imposent de dire **comment** on a relevé et **sous quelle forme** est la quantité :
+
+```json
+"par_metier": { "type": "compteurs", "methode": "comptage",
+  "quantite": { "forme": "exacte", "valeur": "securite + hotesses" }, … }
+"intervalle": { "type": "choix", "methode": "bande_de_jugement", "options": [
+  { "v": "500_2000", "quantite": { "forme": "fourchette", "basse": 500, "haute": 2000 }, "suite": "confiance" },
+  { "v": "plus_10000", "quantite": { "forme": "minimum_seul", "basse": 10000 }, "suite": "confiance" } ] }
+```
+
+- `methode` : `comptage`, `structure`, `temoignage`, `document`, `bande_de_jugement`.
+- `quantite.forme` : `exacte` (`valeur`), `fourchette` (`basse`, `haute`), `minimum_seul` (`basse`), `inconnue`. Les valeurs sont des nombres ou des expressions.
+- **Ne déclarez pas de quantité pour une estimation structurée** (rangées × chaises, chaîne de la foule) : l'analyste la déduit des mesures.
+- Une vue partielle transforme automatiquement une quantité exacte en minimum.
+- Un nœud `compteurs` ou `formulaire` peut terminer le poste avec `fin` au lieu de `suite`.
+
+## Champs d'événement conditionnels
+
+`"si": { "contexte": "evenement" }` n'affiche (et n'exige) un champ d'événement que si un champ précédent a cette valeur.
 
 ## Calculs, validation et textes
 

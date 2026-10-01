@@ -1,6 +1,6 @@
 // Service worker : l'app entière est mise en cache pour fonctionner sans réseau.
 // Incrémenter VERSION à chaque publication pour que les téléphones récupèrent la mise à jour.
-const VERSION = "v1.0.2";
+const VERSION = "v1.1.0";
 const CACHE = `collecte-guidee-${VERSION}`;
 const FICHIERS = [
   "./", "index.html", "styles.css", "manifest.webmanifest",

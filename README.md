@@ -33,8 +33,13 @@ Cette règle est trop lourde pour être appliquée de mémoire, sous pression, a
 
 - **Une question à la fois**, deux ou trois réponses, de gros boutons.
 - **Le formulaire choisit la saisie** : comptage par type (véhicules), structure (rangées × chaises), chaîne de mesures (foule), échantillon de 5 groupes de 10 (objets distribués), intervalle seulement en dernier recours.
-- **Règles de preuve intégrées** : vu / rapporté / pas vu ; « absent » distinct de « hors champ » ; hors champ = pas de donnée, jamais zéro ; une information rapportée ou un relevé peu sûr part chez un analyste ; la confiance est une question séparée de la provenance.
-- **Aucun prix** n'est demandé sur le terrain, **aucun nom** : l'observateur est identifié par un code collecteur.
+- **Règles de collecte intégrées** ([docs/regles-de-collecte.md](docs/regles-de-collecte.md)) : présence à quatre états (présente, absente dans la portée, non observée, indéterminée) ; portée du relevé ; quatre formes de quantité (exacte, fourchette, minimum seul, inconnue) **sans valeur par défaut** ; méthode explicite ; source de chaque affirmation ; une information rapportée ou un relevé peu sûr part chez un analyste ; la confiance est une question séparée de la provenance.
+- **Rien ne se détruit** : refaire un poste conserve la saisie précédente ; un fait manquant se note « à compléter ».
+- **Fourniture** (facultative) sur trois axes indépendants : qui fournit, contrepartie annoncée, règlement rapporté.
+- **Événement facultatif** : une affiche ou une diffusion s'observe aussi hors événement.
+- **Relire et modifier avant l'envoi**, y compris une observation déjà en file d'attente.
+- **Aucun prix** n'est demandé sur le terrain (un propos rapporté est conservé tel quel), **aucun nom** : l'observateur est identifié par un code collecteur.
+- **Position GPS facultative**, jamais automatique, désactivable pour toute l'instance.
 - **Hors ligne** (PWA installable) : tout se remplit sans réseau ; une file d'envoi part au retour du réseau.
 - **Purge après envoi** (par défaut) : un téléphone saisi ne contient que ce qui n'est pas encore parti.
 - **FR / EN**.
@@ -74,7 +79,7 @@ Aucune dépendance, aucune étape de build : des modules JavaScript natifs.
 
 ```sh
 npm run dev          # sert l'app sur http://localhost:8000 (l'envoi nécessite la fonction Netlify)
-npm test             # 19 tests : moteur, protocole, XLSForm, XML, proxy
+npm test             # 20 tests : moteur, protocole, XLSForm, XML, proxy
 npm run generer      # régénère kobo/ et manifest.webmanifest après une modification de config/
 ```
 
@@ -101,16 +106,19 @@ Guide complet : [docs/deployer.md](docs/deployer.md). En bref :
 
 Un envoi qui échoue ? Voir [docs/depannage.md](docs/depannage.md).
 
+Pour transmettre les données à une autre plateforme (Mapomo ou autre), utilisez les **REST Services** de KoboToolbox : voir [docs/kobo-setup.md](docs/kobo-setup.md).
+
 Le proxy ([`lib/proxy.js`](lib/proxy.js)) ne dépend pas de Netlify : il prend une `Request` et rend une `Response`, et peut tourner dans un Cloudflare Worker ou un serveur Node.
 
 ## Sécurité
 
-Observer les dépenses d'un parti expose. Choix par défaut : pas de GPS, pas de nom, pas de prix, pas de papier, purge après envoi, jeton Kobo côté serveur uniquement, en-têtes restrictifs. Détails et limites : [docs/securite.md](docs/securite.md).
+Observer les dépenses d'un parti expose. Choix par défaut : position seulement si l'observateur l'ajoute (désactivable), pas de nom, pas de prix, pas de papier, purge après envoi, jeton Kobo côté serveur uniquement, en-têtes restrictifs. Détails et limites : [docs/securite.md](docs/securite.md).
 
 ## Limites connues
 
 - L'envoi utilise le point de soumission OpenRosa de KoboToolbox, celui de KoboCollect et Enketo. Il a été **validé de bout en bout avec un projet KoboToolbox réel** le 30 septembre 2026 ; faites tout de même un envoi de test sur votre propre serveur avant une collecte réelle ([docs/depannage.md](docs/depannage.md)).
 - Un seul objet distribué par observation (les groupes répétés viendront plus tard).
+- Pas encore de photos ni de correction après envoi (voir [docs/regles-de-collecte.md](docs/regles-de-collecte.md), « Ce qui reste ouvert »).
 - Pas de synchronisation en arrière-plan quand l'app est fermée : l'envoi se fait à l'ouverture, au retour du réseau ou à la demande.
 - Deux points de méthode restent ouverts au Lab : P9 (une ou deux colonnes pour provenance et confiance ; l'app en garde deux) et P12 (observateurs en désaccord). Le dédoublonnage des convois n'est qu'un signal pour l'analyste.
 

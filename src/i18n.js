@@ -8,8 +8,8 @@ const TEXTES = {
     aucuneObs: "Aucune observation en cours.",
     reglages: "Réglages", aPropos: "À propos", retour: "← Retour", retourListe: "← Postes",
     evenement: "Événement", postes: "Postes", fiche: "Fiche",
-    terminer: "Terminer et mettre en file d'envoi", supprimer: "Supprimer ce brouillon", confirmerSuppr: "Confirmer la suppression",
-    evtIncomplet: "Renseignez d'abord l'événement : il permet de valoriser un poste non observé en détail.",
+    terminer: "Terminer et relire", supprimer: "Supprimer ce brouillon", confirmerSuppr: "Confirmer la suppression",
+    evtIncomplet: "Renseignez d'abord le contexte : il permet de valoriser un poste non observé en détail.",
     aFaire: "à faire", fait: "fait", aVerifier: "à vérifier", rapporte: "rapporté", sansDonnee: "sans donnée",
     question: "Question", precedente: "← Question précédente", continuer: "Continuer",
     champsManquants: "Complétez les champs signalés.", regleNonRespectee: "Les valeurs saisies ne permettent pas de continuer : vérifiez-les.",
@@ -27,7 +27,18 @@ const TEXTES = {
     erreurCode: "Code collecteur refusé par le serveur.", erreurServeur: "Le serveur n'a pas accepté l'envoi.", erreurReseau: "Réseau indisponible : nouvel essai plus tard.",
     protocoleInvalide: "Le protocole configuré est invalide :",
     maj: "Nouvelle version disponible.", recharger: "Recharger",
-    dateObs: "Commencée le"
+    dateObs: "Commencée le",
+    position: "Ajouter ma position", positionAjoutee: "Position ajoutée", positionRetirer: "Retirer la position",
+    positionAide: "Facultatif. N'ajoutez votre position que si c'est sans risque pour vous.",
+    positionRefusee: "Position refusée ou indisponible : l'observation reste valable sans.", positionEnCours: "Recherche de la position…",
+    relire: "Relire avant envoi", relireAide: "Vérifiez chaque poste. Une fois reçue par le serveur, l'observation ne pourra plus être modifiée.",
+    envoyer: "Envoyer", modifier: "Modifier", revenirObs: "← Revenir à l'observation", modifierAvantEnvoi: "Modifier avant l'envoi",
+    aucunPoste: "Aucun poste renseigné : les postes non renseignés ne seront pas envoyés.",
+    quantite: "Quantité", presence: { presente: "Présent", absente_dans_la_portee: "Absent (constaté)", non_observee: "Non observé", indeterminee: "Indéterminé" },
+    complement: "Fait à compléter (facultatif)", complementAide: "Ex. durée inconnue, classe à confirmer. La ligne reste valable.",
+    fourniture: "Qui fournit ? (facultatif)", fournitureAide: "Ce qui est annoncé, pas ce qui est prouvé. Laissez « non recueilli » si vous ne l'avez pas demandé.",
+    origine: "Observé ou rapporté ?", enregistrerFourniture: "Enregistrer", fournitureRenseignee: "Fourniture renseignée",
+    historique: "saisie(s) précédente(s) conservée(s)"
   },
   en: {
     enLigne: "Online", horsLigne: "Offline",
@@ -37,7 +48,7 @@ const TEXTES = {
     aucuneObs: "No observation in progress.",
     reglages: "Settings", aPropos: "About", retour: "← Back", retourListe: "← Items",
     evenement: "Event", postes: "Items", fiche: "Record",
-    terminer: "Finish and queue for sending", supprimer: "Delete this draft", confirmerSuppr: "Confirm deletion",
+    terminer: "Finish and review", supprimer: "Delete this draft", confirmerSuppr: "Confirm deletion",
     evtIncomplet: "Fill in the event first: it allows valuing an item not observed in detail.",
     aFaire: "to do", fait: "done", aVerifier: "to check", rapporte: "reported", sansDonnee: "no data",
     question: "Question", precedente: "← Previous question", continuer: "Continue",
@@ -56,7 +67,18 @@ const TEXTES = {
     erreurCode: "Collector code rejected by the server.", erreurServeur: "The server did not accept the submission.", erreurReseau: "Network unavailable: will retry later.",
     protocoleInvalide: "The configured protocol is invalid:",
     maj: "A new version is available.", recharger: "Reload",
-    dateObs: "Started on"
+    dateObs: "Started on",
+    position: "Add my location", positionAjoutee: "Location added", positionRetirer: "Remove location",
+    positionAide: "Optional. Only add your location if it is safe for you.",
+    positionRefusee: "Location refused or unavailable: the observation remains valid without it.", positionEnCours: "Getting location…",
+    relire: "Review before sending", relireAide: "Check each item. Once received by the server, the observation can no longer be edited.",
+    envoyer: "Send", modifier: "Edit", revenirObs: "← Back to the observation", modifierAvantEnvoi: "Edit before sending",
+    aucunPoste: "No item filled in: items not filled in will not be sent.",
+    quantite: "Quantity", presence: { presente: "Present", absente_dans_la_portee: "Absent (observed)", non_observee: "Not observed", indeterminee: "Undetermined" },
+    complement: "Missing fact to complete (optional)", complementAide: "E.g. unknown duration, class to confirm. The line remains valid.",
+    fourniture: "Who supplies it? (optional)", fournitureAide: "What is announced, not what is proven. Leave “not collected” if you did not ask.",
+    origine: "Observed or reported?", enregistrerFourniture: "Save", fournitureRenseignee: "Supply information recorded",
+    historique: "previous entry(ies) kept"
   }
 };
 

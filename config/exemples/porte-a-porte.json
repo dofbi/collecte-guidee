@@ -1,7 +1,7 @@
 {
   "$schema": "../schema.json",
   "id": "porte_a_porte",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "titre": {
     "fr": "Tournée de porte-à-porte",
     "en": "Door-to-door canvassing"
@@ -66,7 +66,12 @@
             "fr": "{militants} militants · {encadrants} encadrants",
             "en": "{militants} activists · {encadrants} supervisors"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "comptage",
+          "quantite": {
+            "forme": "exacte",
+            "valeur": "militants + encadrants"
+          }
         }
       }
     },
@@ -105,9 +110,11 @@
             "fr": "{part_foyers} % des foyers",
             "en": "{part_foyers} % of households"
           },
-          "suite": "confiance"
+          "suite": "confiance",
+          "methode": "structure"
         }
-      }
+      },
+      "fourniture": true
     }
   ]
 }
